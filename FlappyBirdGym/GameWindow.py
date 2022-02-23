@@ -11,7 +11,7 @@ class GameWindow(tk.Frame):
 
         master.geometry(f"{width}x{height}")
 
-        self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='white')
+        self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='black')
         self.canvas.pack()
 
         self.createWidgets()
@@ -29,8 +29,8 @@ class GameWindow(tk.Frame):
 
         self.canvas.create_rectangle(
             self.bird_posX0, self.bird_posY0, self.bird_posX1, self.bird_posY1,
-            fill="darkblue",
-            outline='darkblue', 
+            fill="white",
+            outline='white', 
             tags=('bird')
             )
 
@@ -70,7 +70,7 @@ class GameWindow(tk.Frame):
         self.bird_posY0 += delta_y
         self.bird_posY1 += delta_y
 
-        reward = 0.1
+        reward = 0.01
 
         killed = False
         # too low or too high
@@ -97,6 +97,7 @@ class GameWindow(tk.Frame):
         for column in self.columns:
             column.delete()
 
+        self.cnt = 0
         self.columns = []
         self.canvas.delete("bird")
 

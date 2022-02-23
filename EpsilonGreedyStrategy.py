@@ -1,8 +1,8 @@
 import numpy as np
 
-
-class EpsilonGreedyStrategy:
+class EpsilonGreedyStrategy():
     def __init__(self, start, end, decay):
+
         self.epsilon = start
         self.end = end
 
@@ -10,7 +10,7 @@ class EpsilonGreedyStrategy:
 
     def get_exploration_rate(self):
         return self.epsilon
-
+    
     def reduce_epsilon(self):
         if self.epsilon - self.decay > self.end:
             self.epsilon -= self.decay

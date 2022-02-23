@@ -13,22 +13,22 @@ class Columns:
 
         self.birdFlownOver = False
 
-        self.top_height = random.randint(min(40, previousTopHeight - 50), previousTopHeight + 75)
+        self.top_height = random.randint(previousTopHeight - 30, previousTopHeight + 30)
         self.free_space = random.randint(60, 80)
 
         self.tag_column_top = f"square_top_{self.id}"
         self.column_top = self.canvas.create_rectangle(
                             posX, 0, posX + self.column_width, self.top_height,
-                            fill='green',
-                            outline='green',
+                            fill='white',
+                            outline='white',
                             tags=(self.tag_column_top)
                             )
 
         self.tag_column_down = f"square_down_{self.id}"
         self.column_down = self.canvas.create_rectangle(
                             posX, self.top_height + self.free_space, posX + self.column_width, maxHeight,
-                            fill='green',
-                            outline='green',
+                            fill='white',
+                            outline='white',
                             tags=(self.tag_column_down)
                             )
 
