@@ -12,7 +12,11 @@ class EpsilonGreedyStrategy():
         return self.epsilon
     
     def reduce_epsilon(self):
-        if self.epsilon - self.decay > self.end:
-            self.epsilon -= self.decay
+        # if self.epsilon - self.decay > self.end:
+        #     self.epsilon -= self.decay
+
+        newEpsilon = self.epsilon * self.decay
+        if self.end < newEpsilon:
+            self.epsilon = newEpsilon
 
         # expo decay -> better curve 

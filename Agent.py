@@ -13,7 +13,7 @@ class Agent():
 
         self.batch_size = batch_size
 
-        self.strategy = EpsilonGreedyStrategy(start=1.0, end=0.05, decay=0.0005)
+        self.strategy = EpsilonGreedyStrategy(start=1.0, end=0.05, decay=0.99)
         self.replayMemory = ReplayMemory(capacity=75000, input_dims=input_dims)
 
         self.q_net = DDDQN(num_actions)
@@ -21,6 +21,7 @@ class Agent():
 
         self.target_net = DDDQN(num_actions)
         self.target_net.build((self.batch_size ,*input_dims))
+        self.update_target()
 
     def select_action(self, state):
         
@@ -44,7 +45,7 @@ class Agent():
           self.target_net.set_weights(self.q_net.get_weights()) 
     
     def train_step(self):
-        if self.replayMemory.idx < 2000: # higher!!!
+        if not self.replayMemory.haveEnoughSamples():
             return
 
         states, actions, next_state, rewards, dones = \
@@ -58,7 +59,7 @@ class Agent():
         q_target[batch_index, actions] = rewards + self.gamma * next_state_val[batch_index, max_action]*dones
         self.q_net.train_step(states, q_target)
      
-        self.strategy.reduce_epsilon() # each episode
+        #self.strategy.reduce_epsilon() # each episode
         # erst wenn buffer "fast voll"
         # erst samples holen bevor trainieren
         # thompson sampling

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 def main():
 
     # env = EnvMananger()
-    # print(env.getState()[:, :, 0])
+    # print(env.getState().shape)
     
     # for i in range(20):
     #     env.step(1)
@@ -29,7 +29,7 @@ def main():
     num_episods = 50000
     update = 100 # higher
 
-    # env = gym.make('LunarLander-v2')
+    #env = gym.make('LunarLander-v2')
     # agent = Agent(input_dims=env.observation_space.shape,
     #             num_actions=env.action_space.n, batch_size=64)
 
@@ -64,6 +64,9 @@ def main():
                 rewards.append(reward)
                 cnt_steps += 1
             
+            if agent.replayMemory.haveEnoughSamples():
+                agent.strategy.reduce_epsilon()
+
             if episode % update == 0:
                 agent.update_target()
             
@@ -77,7 +80,8 @@ def main():
             tf.summary.scalar(f"Steps per episode", cnt_steps, step=episode)
 
             print(f"Episode {episode} with score {round(score, 2)} and avg reward {round(np.mean(rewards), 2)} epsilon: {agent.strategy.get_exploration_rate()}")
-
+        
+        
             # okay: 1
             # dead: -1
             # avoid: 0.01 vs 1

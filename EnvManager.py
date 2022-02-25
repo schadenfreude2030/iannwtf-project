@@ -3,10 +3,12 @@ from FlappyBirdGym.FlappyBirdGym import *
 import numpy as np
 import cv2
 
+import gym
+
 class EnvMananger():
 
     def __init__(self):
-        self.env = FlappyBirdGym() #gym.make('LunarLander-v2')#.unwrapped
+        self.env = FlappyBirdGym() #gym.make('LunarLander-v2')#.unwrapped FlappyBirdGym()
         #self.env.reset()
      
         current_img = self.getImage()#env.getWindowImage()
@@ -17,7 +19,7 @@ class EnvMananger():
     def step(self,action):
         
         img, reward, done_flag = self.env.step(action)
-
+        #_, reward, done_flag, _ = self.env.step(action)
         
         self.state[:, :, 0] = self.state[:, :, 1]
         self.state[:, :, 1] = self.getImage()
@@ -39,10 +41,10 @@ class EnvMananger():
 
     def getImage(self):
         # Get image
-        img = self.env.getWindowImage()#render(mode="rgb_array")
+        img = self.env.getWindowImage() #self.env.render(mode="rgb_array")#getWindowImage()
 
         # Shrink
-        img = cv2.resize(img, (225, 150)) 
+        img = cv2.resize(img, (img.shape[1]//2, img.shape[0]//2)) 
 
         img = img[:, :100, :]
 

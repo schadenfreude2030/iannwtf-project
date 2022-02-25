@@ -70,7 +70,7 @@ class GameWindow(tk.Frame):
         self.bird_posY0 += delta_y
         self.bird_posY1 += delta_y
 
-        reward = 0.01
+        reward = 1
 
         killed = False
         # too low or too high
