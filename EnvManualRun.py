@@ -6,7 +6,8 @@ import numpy as np
 def main():
 
     # x = np.arange(0,450)
-    # y = gaussianNormal(x, mu=250, sigma=100)*200
+    # free_space_factor = 0.25
+    # y = gaussianNormal(x, mu=250, sigma=100*free_space_factor) / gaussianNormal(250, mu=250, sigma=100*free_space_factor)
     # plt.plot(x,y)
     # plt.show()
     # exit()

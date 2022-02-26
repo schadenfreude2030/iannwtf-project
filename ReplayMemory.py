@@ -48,4 +48,4 @@ class ReplayMemory():
         return states, actions, next_state, rewards, done_flag
     
     def haveEnoughSamples(self):
-        return self.idx_wasOverflown or 8000 < self.idx 
+        return self.idx_wasOverflown or 2000 < self.idx 

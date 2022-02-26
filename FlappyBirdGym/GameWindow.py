@@ -77,14 +77,18 @@ class GameWindow(tk.Frame):
         self.bird_posY0 += delta_y
         self.bird_posY1 += delta_y
 
-
-        #distance = abs(self.bird_posY0 - self.first_column.middle_point)/20
+        free_space_factor = 0.125
         reward = self.gaussianNormal(
                         x=self.bird_posY0, 
                         mu=self.first_column.middle_point, 
-                        sigma=self.first_column.free_space/8
+                        sigma=self.first_column.free_space*free_space_factor
                         )
-        reward *= 200
+        # normalize between [0,1]
+        reward = reward / self.gaussianNormal(
+                        x=self.first_column.middle_point, # <--- reach max
+                        mu=self.first_column.middle_point, 
+                        sigma=self.first_column.free_space*free_space_factor
+                        )
 
         killed = False
         # too low or too high
