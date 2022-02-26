@@ -78,8 +78,13 @@ class GameWindow(tk.Frame):
         self.bird_posY1 += delta_y
 
 
-        distance = abs(self.bird_posY0 - self.first_column.middle_point)/20
-        reward = self.gaussianNormal(distance)
+        #distance = abs(self.bird_posY0 - self.first_column.middle_point)/20
+        reward = self.gaussianNormal(
+                        x=self.bird_posY0, 
+                        mu=self.first_column.middle_point, 
+                        sigma=self.first_column.free_space/8
+                        )
+        reward *= 200
 
         killed = False
         # too low or too high
@@ -118,5 +123,5 @@ class GameWindow(tk.Frame):
         self.master.destroy()
 
     
-    def gaussianNormal(self,x, sigma=0.75):
-        return (1/ (sigma*np.sqrt(2*np.pi)) )* np.exp((-1/2)* (x/sigma)**2)
+    def gaussianNormal(self,x, mu=0, sigma=1):
+        return (1/ (sigma*np.sqrt(2*np.pi)) )* np.exp((-1/2)* ((x-mu)/sigma)**2)

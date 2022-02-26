@@ -14,7 +14,7 @@ class Columns:
         self.birdFlownOver = False
 
         self.top_height = random.randint(previousTopHeight - 30, previousTopHeight + 30)
-        self.free_space = random.randint(60, 80)
+        self.free_space = random.randint(80, 100)
 
 
         self.middle_point = self.top_height + self.free_space/2
