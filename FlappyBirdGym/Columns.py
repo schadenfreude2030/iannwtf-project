@@ -16,6 +16,9 @@ class Columns:
         self.top_height = random.randint(previousTopHeight - 30, previousTopHeight + 30)
         self.free_space = random.randint(60, 80)
 
+
+        self.middle_point = self.top_height + self.free_space/2
+
         self.tag_column_top = f"square_top_{self.id}"
         self.column_top = self.canvas.create_rectangle(
                             posX, 0, posX + self.column_width, self.top_height,

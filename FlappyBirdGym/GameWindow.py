@@ -1,6 +1,8 @@
 import tkinter as tk
 from FlappyBirdGym.Columns import *
 
+import numpy as np
+
 class GameWindow(tk.Frame):
     def __init__(self, master, height=300, width=450):
         
@@ -14,9 +16,13 @@ class GameWindow(tk.Frame):
         self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='black')
         self.canvas.pack()
 
+        self.first_column = None
+
         self.createWidgets()
 
         self.cnt = 0
+
+        
 
 
     def createWidgets(self):
@@ -42,7 +48,8 @@ class GameWindow(tk.Frame):
                 self.columns.append( Columns(self.canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=100) )
             else:
                 self.columns.append( Columns(self.canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
-
+        
+        self.first_column = self.columns[0]
 
     def nextGameStep(self, action):
         
@@ -70,7 +77,9 @@ class GameWindow(tk.Frame):
         self.bird_posY0 += delta_y
         self.bird_posY1 += delta_y
 
-        reward = 1
+
+        distance = abs(self.bird_posY0 - self.first_column.middle_point)/20
+        reward = self.gaussianNormal(distance)
 
         killed = False
         # too low or too high
@@ -82,9 +91,11 @@ class GameWindow(tk.Frame):
             # check for collisions
             for column in self.columns:
                 
-                if column.getPosX() <= self.bird_posX0 and not column.wasBirdFlownOver():
+                if column.getPosX() + column.column_width <= self.bird_posX0 and not column.wasBirdFlownOver():
                     column.setBirdFlownOver(True)
-                    reward = 1
+
+                    self.first_column = self.columns[1]
+                    #reward = 10
 
                 if column.touched():
                     killed = True
@@ -105,3 +116,7 @@ class GameWindow(tk.Frame):
     
     def quit(self):
         self.master.destroy()
+
+    
+    def gaussianNormal(self,x, sigma=0.75):
+        return (1/ (sigma*np.sqrt(2*np.pi)) )* np.exp((-1/2)* (x/sigma)**2)

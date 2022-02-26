@@ -20,7 +20,7 @@ def main():
     #     plt.imshow(env.getState()[:, :, 1], cmap="gray")
     #     plt.show()
     # opencv imshow
-    # exit()
+    #exit()
     # Logging
 
     file_path = "test_logs/test" 
@@ -50,7 +50,7 @@ def main():
 
             cnt_steps = 0
             state = env.reset()
-            while not done_flag:
+            while not done_flag and cnt_steps < 500:
                 action = agent.select_action(state)
                 next_state, reward, done_flag  = env.step(action)
 
@@ -60,7 +60,7 @@ def main():
                 agent.train_step()
                 
                 score += reward
-
+          
                 rewards.append(reward)
                 cnt_steps += 1
             
@@ -71,7 +71,7 @@ def main():
                 agent.update_target()
             
             # Save weights
-            if episode % 500 == 0:
+            if episode % 200 == 0:
                 agent.q_net.save_weights(f"./saved_models/trainied_weights_epoch_{episode}", save_format="tf")
        
             tf.summary.scalar(f"Average reward", np.mean(rewards), step=episode)

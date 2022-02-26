@@ -8,9 +8,9 @@ class DDDQN(tf.keras.Model):
             tf.keras.layers.Conv2D(8, kernel_size=(3, 3), strides=2, padding='valid', activation='relu'),
             tf.keras.layers.Conv2D(16, kernel_size=(3, 3), strides=2, padding='valid', activation='relu'),
             tf.keras.layers.Conv2D(32, kernel_size=(3, 3), strides=2, padding='valid', activation='relu'),
-            tf.keras.layers.MaxPool2D(pool_size=(2, 2)),
+            #tf.keras.layers.MaxPool2D(pool_size=(2, 2)),
             tf.keras.layers.Flatten(),
-            # tf.keras.layers.Dense(64, activation='tanh'),
+            tf.keras.layers.Dense(8, activation='tanh'),
             # tf.keras.layers.Dense(128, activation='tanh'),
             
         ]
