@@ -34,9 +34,15 @@ class ReplayMemory():
             max_mem = self.capacity
         else:
             max_mem = self.idx
-    
-        # a value shall not be sampled mutiple times within a batch
-        sampled_idxs = np.random.choice(max_mem, batch_size, replace=False)
+        
+        # Thompson sampling
+        rewards = self.rewards[:max_mem] 
+        # Normalize between [0,1] 
+        rewards_z = (rewards - np.min(rewards)) / (np.max(rewards) - np.min(rewards))
+        probs = rewards_z/np.sum(rewards_z) # sum up each value must be 1
+   
+        # A value shall not be sampled mutiple times within a batch
+        sampled_idxs = np.random.choice(max_mem, batch_size, replace=False, p=probs)
 
         states = self.states[sampled_idxs]
         actions = self.actions[sampled_idxs]
@@ -48,4 +54,4 @@ class ReplayMemory():
         return states, actions, next_state, rewards, done_flag
     
     def haveEnoughSamples(self):
-        return self.idx_wasOverflown or 2000 < self.idx 
+        return self.idx_wasOverflown or 2500 < self.idx 
