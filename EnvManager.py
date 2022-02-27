@@ -7,54 +7,37 @@ import gym
 
 class EnvMananger():
 
-    def __init__(self):
-        self.env = FlappyBirdGym() #gym.make('LunarLander-v2')#.unwrapped FlappyBirdGym()
-        #self.env.reset()
-     
-        current_img = self.getImage()#env.getWindowImage()
-        self.state = np.zeros(shape=(*current_img.shape, 2))
-        self.state[:, :, 1] = current_img
+    def __init__(self, windowMode = False):
+
+        self.env = FlappyBirdGym(windowMode) 
+
+        current_state = self.env.getState()
+        
+        self.state = np.zeros(shape=(*current_state.shape, 2))
+        self.state[:, 1] = current_state
       
     
     def step(self,action):
         
         img, reward, done_flag = self.env.step(action)
-        #_, reward, done_flag, _ = self.env.step(action)
+       
+        self.state[:, 0] = self.state[:, 1]
+        self.state[:, 1] = self.env.getState()
         
-        self.state[:, :, 0] = self.state[:, :, 1]
-        self.state[:, :, 1] = self.getImage()
-     
-        return self.state, reward, done_flag
+        return self.state.flatten(), reward, done_flag
 
     def reset(self):
         self.env.reset()
 
      
-        current_img = self.getImage()#env.getWindowImage()
-        self.state = np.zeros(shape=(*current_img.shape, 2))
-        self.state[:, :, 1] = current_img
+        current_state = self.env.getState()
+        self.state = np.zeros(shape=(*current_state.shape, 2))
+        self.state[:, 1] = current_state
      
-        return self.state
+        return self.state.flatten()
 
     def getState(self):
-        return self.state
-
-    def getImage(self):
-        # Get image
-        img = self.env.getWindowImage() #self.env.render(mode="rgb_array")#getWindowImage()
-
-        # Shrink
-        img = cv2.resize(img, (img.shape[1]//2, img.shape[0]//2)) 
-
-        img = img[:, :100, :]
-
-        # Convert RGB -> Grey color
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-
-        # Sloppy input normalization, just bringing image values from range [0, 255] to [-1, 1]
-        img = (img/128)-1        
-        
-        return img
+        return self.state.flatten()
 
     def close(self):
         self.env.close()

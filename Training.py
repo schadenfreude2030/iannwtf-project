@@ -1,4 +1,3 @@
-import gym
 import numpy as np
 
 from Agent import *
@@ -8,21 +7,7 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    # env = EnvMananger()
-    # print(env.getState().shape)
-    
-    # for i in range(20):
-    #     env.step(1)
-
-    #     plt.imshow(env.getState()[:, :, 0], cmap="gray")
-    #     plt.show()
-
-    #     plt.imshow(env.getState()[:, :, 1], cmap="gray")
-    #     plt.show()
-    # opencv imshow
-    #exit()
     # Logging
-
     file_path = "test_logs/test" 
     train_summary_writer = tf.summary.create_file_writer(file_path)
 

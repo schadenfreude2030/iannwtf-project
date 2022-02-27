@@ -2,10 +2,11 @@ import random
 
 class Columns:
     id = 0
-    def __init__(self, canvas, posX, maxHeight, column_width, previousTopHeight):
+    def __init__(self, windowMode, canvas, posX, maxHeight, column_width, previousTopHeight):
         
+        self.windowMode = windowMode
         self.canvas = canvas
-        self.posX = posX
+  
 
         self.id = Columns.id
 
@@ -19,41 +20,69 @@ class Columns:
 
         self.middle_point = self.top_height + self.free_space/2
 
+
+        self.top_pos_x0 = posX
+        self.top_pos_x1 = posX + self.column_width
+
+        self.top_pos_y0 = 0
+        self.top_pos_y1 = self.top_height
+
         self.tag_column_top = f"square_top_{self.id}"
-        self.column_top = self.canvas.create_rectangle(
-                            posX, 0, posX + self.column_width, self.top_height,
-                            fill='white',
-                            outline='white',
-                            tags=(self.tag_column_top)
-                            )
+        
+
+        self.down_pos_x0 = posX
+        self.down_pos_x1 = posX + self.column_width
+
+        self.down_pos_y0 = self.top_height + self.free_space
+        self.down_pos_y1 = maxHeight
 
         self.tag_column_down = f"square_down_{self.id}"
-        self.column_down = self.canvas.create_rectangle(
-                            posX, self.top_height + self.free_space, posX + self.column_width, maxHeight,
-                            fill='white',
-                            outline='white',
-                            tags=(self.tag_column_down)
-                            )
+
+        if windowMode:
+            self.column_top = self.canvas.create_rectangle(
+                                self.top_pos_x0, self.top_pos_y0,  self.top_pos_x1, self.top_pos_y1,
+                                fill='white',
+                                outline='white',
+                                tags=(self.tag_column_top)
+                                )
+
+            self.column_down = self.canvas.create_rectangle(
+                                self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1,
+                                fill='white',
+                                outline='white',
+                                tags=(self.tag_column_down)
+                                )
 
         Columns.id += 1
     
     def getPosX(self):
-        return self.posX
+        return self.down_pos_x0 #self.posX
 
     def move(self, dx, dy):
         
-        self.posX += dx
+        #self.posX += dx
 
-        self.canvas.move(self.tag_column_top, dx, dy)
-        self.canvas.move(self.tag_column_down, dx, dy)
+        self.top_pos_x0 += dx
+        self.top_pos_x1 += dx
+        self.top_pos_y0 += dy
+        self.top_pos_y1 += dy
+        
+        self.down_pos_x0 += dx
+        self.down_pos_x1 += dx
+        self.down_pos_y0 += dy
+        self.down_pos_y1 += dy
+
+        if self.windowMode:
+            self.canvas.move(self.tag_column_top, dx, dy)
+            self.canvas.move(self.tag_column_down, dx, dy)
     
 
     def delete(self):
-        
-        self.canvas.delete(self.column_top)
-        self.canvas.delete(self.column_down)
+        if self.windowMode:
+            self.canvas.delete(self.column_top)
+            self.canvas.delete(self.column_down)
 
-    def touched(self):
+    def touched(self, pos_bird):
 
         def touchedSingleColumn(pos_bird, pos_column):
             bird_x1, bird_y1, bird_x2, bird_y2 = pos_bird
@@ -74,9 +103,20 @@ class Columns:
             return left_side or top_side or right_side or down_side
 
 
-        pos_bird = self.canvas.coords('bird')
-        pos_column_top = self.canvas.coords(self.tag_column_top)
-        pos_column_down = self.canvas.coords(self.tag_column_down)
+        #pos_bird = self.canvas.coords('bird')
+        pos_column_top = self.top_pos_x0, self.top_pos_y0, self.top_pos_x1, self.top_pos_y1 #self.canvas.coords(self.tag_column_top)
+        
+        # print("-------------")
+        # print(self.top_pos_x0, self.top_pos_y0, self.top_pos_x1, self.top_pos_y1)
+        # print(pos_column_top)
+        # print("-------------")
+
+        pos_column_down = self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1 #self.canvas.coords(self.tag_column_down)
+
+        # print("-------------")
+        # print(self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1)
+        # print(pos_column_down)
+        # print("-------------")
 
         return touchedSingleColumn(pos_bird, pos_column_top) or touchedSingleColumn(pos_bird, pos_column_down)
 

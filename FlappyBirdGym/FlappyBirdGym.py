@@ -1,24 +1,26 @@
 import tkinter as tk
-from FlappyBirdGym.GameWindow import *
+from FlappyBirdGym.GameLogic import *
 
 from threading import Thread, Event
-
-import pyautogui
 
 import numpy as np
 
 import time
 
 class FlappyBirdGym:
-    def __init__(self):
+    def __init__(self, windowMode = False):
         
-        self.e = Event()
+        if windowMode:
+            self.e = Event()
     
-        self.windowThread = Thread(target = self.windowLoop)
-        self.windowThread.start() 
+            self.windowThread = Thread(target = self.windowLoop)
+            self.windowThread.start() 
 
-        self.e.wait()
-        time.sleep(0.5)
+            self.e.wait()
+            time.sleep(0.5)
+
+        else:
+            self.gameLogic = GameLogic(windowMode=False)
 
         self.done = False
       
@@ -29,32 +31,27 @@ class FlappyBirdGym:
             print("Error: Call step() on a finished game")
             return None 
 
-        done, reward = self.gameWindow.nextGameStep(action)
+        done, reward = self.gameLogic.nextGameStep(action)
         self.done = done
         
-        img = self.getWindowImage()
-
-        return img, reward, done
-
-    def getWindowImage(self):
+        state = self.gameLogic.getState()
+      
+        return state, reward, done
     
-        x, y = self.gameWindow.canvas.winfo_rootx(), self.gameWindow.canvas.winfo_rooty()
-        w, h = self.gameWindow.canvas.winfo_width(), self.gameWindow.canvas.winfo_height()
-        
-        img = pyautogui.screenshot(region=(x, y, w, h))
+    def getState(self):
+        return self.gameLogic.getState()
 
-        return np.array(img, dtype=np.float32)
     
     def reset(self):
         self.done = False
-        self.gameWindow.resetGame()
+        self.gameLogic.reset()
 
     def windowLoop(self):
         root = tk.Tk()
-        self.gameWindow = GameWindow(master=root)
+        self.gameLogic = GameLogic(windowMode=True, master=root)
 
         self.e.set()
-        self.gameWindow.mainloop()
+        self.gameLogic.mainloop()
    
     def close(self):
-        self.gameWindow.quit()
+        self.gameLogic.quit()
