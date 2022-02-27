@@ -14,7 +14,7 @@ class GameLogic(tk.Frame):
         if windowMode:
             tk.Frame.__init__(self,master)
             master.geometry(f"{width}x{height}")
-            self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='black')
+            self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='white')
             self.canvas.pack()
 
         self.first_column = None
@@ -34,8 +34,8 @@ class GameLogic(tk.Frame):
         if self.windowMode:
             self.canvas.create_rectangle(
                 self.bird_posX0, self.bird_posY0, self.bird_posX1, self.bird_posY1,
-                fill="white",
-                outline='white', 
+                fill="red",
+                outline='red', 
                 tags=('bird')
                 )
 

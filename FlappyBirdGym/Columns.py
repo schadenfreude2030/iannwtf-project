@@ -41,15 +41,15 @@ class Columns:
         if windowMode:
             self.column_top = self.canvas.create_rectangle(
                                 self.top_pos_x0, self.top_pos_y0,  self.top_pos_x1, self.top_pos_y1,
-                                fill='white',
-                                outline='white',
+                                fill='green',
+                                outline='green',
                                 tags=(self.tag_column_top)
                                 )
 
             self.column_down = self.canvas.create_rectangle(
                                 self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1,
-                                fill='white',
-                                outline='white',
+                                fill='green',
+                                outline='green',
                                 tags=(self.tag_column_down)
                                 )
 

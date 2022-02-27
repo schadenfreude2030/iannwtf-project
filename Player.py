@@ -1,5 +1,9 @@
 from DDQN import *
 from EnvManager import *
+import pyautogui
+
+import imageio
+import cv2
 
 def main():
 
@@ -14,15 +18,33 @@ def main():
 
     q_net.summary()
 
-    while True:
-        state = np.expand_dims(state, axis=0)
-        target = q_net.predict(state)
 
-        best_action = np.argmax(target, axis=1)[0]
-        state, reward, done = env.step(best_action)
+    with imageio.get_writer('test.gif', mode='I') as writer:
+        while True:
+            state = np.expand_dims(state, axis=0)
+            target = q_net.predict(state)
 
-        if done:
-            env.reset()
+            best_action = np.argmax(target, axis=1)[0]
+            state, reward, done = env.step(best_action)
+
+            if done:
+                env.reset()
+            
+            writer.append_data(getWindowImage(env))
+
+def getWindowImage(env):
+    
+    canvas = env.env.gameLogic.canvas
+    x, y = canvas.winfo_rootx(), canvas.winfo_rooty()
+    w, h = canvas.winfo_width(), canvas.winfo_height()
+        
+    img = pyautogui.screenshot(region=(x, y, w, h))
+    img = np.array(img, dtype=np.uint8)
+
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.resize(img, (img.shape[1]//3, img.shape[0]//3)) 
+
+    return np.array(img, dtype=np.uint8)
     
    
 
