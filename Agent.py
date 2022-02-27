@@ -14,7 +14,7 @@ class Agent():
         self.batch_size = batch_size
 
         self.strategy = EpsilonGreedyStrategy(start=1.0, end=0.05, decay=0.99)
-        self.replayMemory = ReplayMemory(capacity=75000, input_dims=input_dims)
+        self.replayMemory = ReplayMemory(capacity=300000, input_dims=input_dims)
 
         self.q_net = DDDQN(num_actions)
         self.q_net.build((self.batch_size ,*input_dims))
@@ -57,12 +57,6 @@ class Agent():
         batch_index = np.arange(self.batch_size, dtype=np.int32)
         q_target = np.copy(target)  #optional  
         
-        # print(rewards.shape)
-        # print(next_state_val.shape)
-        # print(batch_index.shape)
-        # print(max_action.shape)
-        # print(dones.shape)
-
         q_target[batch_index, actions] = rewards + self.gamma * next_state_val[batch_index, max_action]*dones
         self.q_net.train_step(states, q_target)
      

@@ -14,7 +14,7 @@ class Columns:
 
         self.birdFlownOver = False
 
-        self.top_height = random.randint(previousTopHeight - 30, previousTopHeight + 30)
+        self.top_height = random.randint(max(previousTopHeight - 70, 100), min(previousTopHeight + 70,200))
         self.free_space = random.randint(80, 100)
 
 
@@ -59,8 +59,6 @@ class Columns:
         return self.down_pos_x0 #self.posX
 
     def move(self, dx, dy):
-        
-        #self.posX += dx
 
         self.top_pos_x0 += dx
         self.top_pos_x1 += dx
@@ -103,20 +101,9 @@ class Columns:
             return left_side or top_side or right_side or down_side
 
 
-        #pos_bird = self.canvas.coords('bird')
         pos_column_top = self.top_pos_x0, self.top_pos_y0, self.top_pos_x1, self.top_pos_y1 #self.canvas.coords(self.tag_column_top)
         
-        # print("-------------")
-        # print(self.top_pos_x0, self.top_pos_y0, self.top_pos_x1, self.top_pos_y1)
-        # print(pos_column_top)
-        # print("-------------")
-
         pos_column_down = self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1 #self.canvas.coords(self.tag_column_down)
-
-        # print("-------------")
-        # print(self.down_pos_x0, self.down_pos_y0, self.down_pos_x1, self.down_pos_y1)
-        # print(pos_column_down)
-        # print("-------------")
 
         return touchedSingleColumn(pos_bird, pos_column_top) or touchedSingleColumn(pos_bird, pos_column_down)
 

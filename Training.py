@@ -12,13 +12,9 @@ def main():
     train_summary_writer = tf.summary.create_file_writer(file_path)
 
     num_episods = 50000
-    update = 100 # higher
+    update = 100 
 
-    #env = gym.make('LunarLander-v2')
-    # agent = Agent(input_dims=env.observation_space.shape,
-    #             num_actions=env.action_space.n, batch_size=64)
-
-    env = EnvMananger() #gym.make('LunarLander-v2')
+    env = EnvMananger()
     agent = Agent(input_dims=env.observation_space_shape,
                 num_actions=2, batch_size=64)
 
@@ -52,12 +48,13 @@ def main():
             if agent.replayMemory.haveEnoughSamples():
                 agent.strategy.reduce_epsilon()
 
-            if episode % update == 0:
-                agent.update_target()
+                # save only when we are learning
+                if episode % update == 0:
+                    agent.update_target()
             
-            # Save weights
-            if episode % 200 == 0:
-                agent.q_net.save_weights(f"./saved_models/trainied_weights_epoch_{episode}", save_format="tf")
+                # Save weights
+                if episode % 100 == 0:
+                    agent.q_net.save_weights(f"./saved_models/trainied_weights_epoch_{episode}", save_format="tf")
        
             tf.summary.scalar(f"Average reward", np.mean(rewards), step=episode)
             tf.summary.scalar(f"Score", score, step=episode)

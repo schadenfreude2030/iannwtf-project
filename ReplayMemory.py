@@ -15,7 +15,7 @@ class ReplayMemory():
         self.done_flags = np.zeros(self.capacity, dtype=np.int32)
 
     def store_experience(self, state, action, next_state, reward, done_flag):
-  
+        
         self.states[self.idx] = state
         self.actions[self.idx] = action
         self.next_states[self.idx] = next_state
@@ -54,4 +54,4 @@ class ReplayMemory():
         return states, actions, next_state, rewards, done_flag
     
     def haveEnoughSamples(self):
-        return self.idx_wasOverflown or 25000 < self.idx 
+        return self.idx_wasOverflown or 100000 < self.idx 

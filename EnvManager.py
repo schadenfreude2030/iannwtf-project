@@ -32,7 +32,7 @@ class EnvMananger():
      
         current_state = self.env.getState()
         self.state = np.zeros(shape=(*current_state.shape, 2))
-        self.state[:, 1] = current_state
+        self.state[:, 0] = current_state
      
         return self.state.flatten()
 
@@ -44,7 +44,7 @@ class EnvMananger():
     
     @property
     def observation_space_shape(self):
-        return self.state.shape
+        return self.state.flatten().shape
     
     @property
     def action_space(self):

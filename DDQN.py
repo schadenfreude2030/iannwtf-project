@@ -5,7 +5,6 @@ class DDDQN(tf.keras.Model):
         super(DDDQN, self).__init__()
 
         self.front_end_layer_list = [
-         
             tf.keras.layers.Dense(64, activation='tanh'),
             tf.keras.layers.Dense(128, activation='tanh'),
         ]
@@ -21,6 +20,7 @@ class DDDQN(tf.keras.Model):
         
         for layer in self.front_end_layer_list:
             x = layer(x)
+        
 
         v = self.v(x)
         a = self.a(x)
@@ -28,10 +28,10 @@ class DDDQN(tf.keras.Model):
         return q
 
     @tf.function
-    def train_step(self, input_seq, target_token):
+    def train_step(self, x, target):
         with tf.GradientTape() as tape:
-            predictions = self(input_seq, training=True)
-            loss = self.loss_function(target_token, predictions) #+ tf.reduce_sum(self.losses)
+            predictions = self(x, training=True)
+            loss = self.loss_function(target, predictions) #+ tf.reduce_sum(self.losses)
         
         gradients = tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
