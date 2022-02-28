@@ -6,15 +6,17 @@ import imageio
 import cv2
 
 def main():
-
-    env = EnvMananger(windowMode=True)
+    # game
+    # stats
+    # none
+    env = EnvMananger(windowMode="stats")
 
     q_net = DDDQN(num_actions=2)
     q_net.build((32,*env.observation_space_shape))
 
     q_net.load_weights("./saved_models/trainied_weights_epoch_4100")
 
-    state = env.reset()
+    state = env.getState()
 
     q_net.summary()
 
@@ -27,10 +29,12 @@ def main():
             best_action = np.argmax(target, axis=1)[0]
             state, reward, done = env.step(best_action)
 
+            env.env.gameLogic.updatePlots()
+
             if done:
                 env.reset()
             
-            writer.append_data(getWindowImage(env))
+            #writer.append_data(getWindowImage(env))
 
 def getWindowImage(env):
     

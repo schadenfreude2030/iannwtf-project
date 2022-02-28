@@ -8,9 +8,14 @@ import numpy as np
 import time
 
 class FlappyBirdGym:
-    def __init__(self, windowMode = False):
+    def __init__(self, windowMode = "none"):
         
-        if windowMode:
+        self.windowMode = windowMode
+
+        if windowMode == "none":
+            self.gameLogic = GameLogic(windowMode=self.windowMode)
+
+        else:
             self.e = Event()
     
             self.windowThread = Thread(target = self.windowLoop)
@@ -18,9 +23,6 @@ class FlappyBirdGym:
 
             self.e.wait()
             time.sleep(0.5)
-
-        else:
-            self.gameLogic = GameLogic(windowMode=False)
 
         self.done = False
       
@@ -48,7 +50,7 @@ class FlappyBirdGym:
 
     def windowLoop(self):
         root = tk.Tk()
-        self.gameLogic = GameLogic(windowMode=True, master=root)
+        self.gameLogic = GameLogic(windowMode=self.windowMode, master=root)
 
         self.e.set()
         self.gameLogic.mainloop()

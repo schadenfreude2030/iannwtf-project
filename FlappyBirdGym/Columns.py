@@ -1,5 +1,9 @@
 import random
 
+from tkinter import *
+from PIL import ImageTk, Image
+
+
 class Columns:
     id = 0
     def __init__(self, windowMode, canvas, posX, maxHeight, column_width, previousTopHeight):
@@ -38,7 +42,16 @@ class Columns:
 
         self.tag_column_down = f"square_down_{self.id}"
 
-        if windowMode:
+        if self.windowMode != "none":
+            
+            # self.img_top = Image.open("./FlappyBirdGym/pipe-green_top.png")
+            
+            # self.img_top = self.img_top.resize((self.top_pos_x1 - self.top_pos_x0, self.top_pos_y1 - self.top_pos_y0), Image.ANTIALIAS)
+           
+            # self.img_top = ImageTk.PhotoImage(self.img_top)
+
+            # self.column_top = self.canvas.create_image((self.top_pos_x0, self.top_pos_y0), image = self.img_top, tags=(self.tag_column_top))
+
             self.column_top = self.canvas.create_rectangle(
                                 self.top_pos_x0, self.top_pos_y0,  self.top_pos_x1, self.top_pos_y1,
                                 fill='green',
@@ -70,13 +83,13 @@ class Columns:
         self.down_pos_y0 += dy
         self.down_pos_y1 += dy
 
-        if self.windowMode:
+        if self.windowMode != "none":
             self.canvas.move(self.tag_column_top, dx, dy)
             self.canvas.move(self.tag_column_down, dx, dy)
     
 
     def delete(self):
-        if self.windowMode:
+        if self.windowMode != "none":
             self.canvas.delete(self.column_top)
             self.canvas.delete(self.column_down)
 
