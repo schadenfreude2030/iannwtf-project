@@ -29,7 +29,7 @@ class GameLogic(tk.Frame):
         elif windowMode == "stats":
             
             tk.Frame.__init__(self,master)
-            master.geometry(f"{width + 800}x{height+ 85}")
+            master.geometry(f"{width + 1200}x{height+ 85}")
             self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='white')
             self.canvas.pack( side = LEFT)
 
@@ -49,12 +49,70 @@ class GameLogic(tk.Frame):
         self.steps = []
         self.step_cnt = 0
 
-    def updatePlots(self):
+    def updatePlots(self, v, a):
 
         self.fig.clf()
 
-        collectedRewards_plt = self.fig.add_subplot(121)
-        x = np.array([1,2,3])
+        #
+        # Plot 1
+        #
+        stateAdventage_plt = self.fig.add_subplot(131)
+
+        # remove batch dim
+        v = v[0]
+        a = a[0]
+        y = np.concatenate((v, a))
+        
+        stateAdventage_barPlt = stateAdventage_plt.bar(["V(s)", "A(s, No jump)", "A(s, Jump)"], y, color="deepskyblue")
+     
+        idxMaxAdventage = np.argmax(a) + 1 # ignore state
+
+        stateAdventage_barPlt[idxMaxAdventage].set_color("orange")
+        stateAdventage_barPlt[idxMaxAdventage].set_label("Best action")
+
+        stateAdventage_plt.set_title("State and adventage")
+
+        stateAdventage_plt.set_ylim(-2,3)
+        stateAdventage_plt.legend()
+        stateAdventage_plt.grid(True)
+        
+        #
+        # Plot 2
+        #
+
+        rewardsDistribution_plt = self.fig.add_subplot(132)
+        x = np.arange(0, self.height + 1 ) # inclusive
+        y = self.gaussianNormal(
+                        x=x,
+                        mu=self.first_column.middle_point, 
+                        sigma=self.first_column.free_space*self.free_space_factor
+                        )
+        y = y / self.gaussianNormal(
+                        x=self.first_column.middle_point, # <--- reach max
+                        mu=self.first_column.middle_point, 
+                        sigma=self.first_column.free_space*self.free_space_factor
+                        )
+
+        rewardsDistribution_plt.plot(x,y)
+        rewardsDistribution_plt.set_title("Reward distribution of y positions")
+        rewardsDistribution_plt.set_xlabel("y position")
+        rewardsDistribution_plt.set_ylabel("Reward")
+        rewardsDistribution_plt.grid(True)
+
+        rewardsDistribution_plt.hlines(y=y[self.bird_posY0], xmin=0, xmax=self.bird_posY0, color='red')
+        rewardsDistribution_plt.vlines(x=self.bird_posY0, ymin=0, ymax=y[self.bird_posY0], color="r")
+
+        rewardsDistribution_plt.text(self.bird_posY0 + 5, 0.5, "Bird pos", transform=rewardsDistribution_plt.transData, rotation=90, verticalalignment='center', color="r")
+
+        rewardsDistribution_plt.set_xlim(0, self.height)
+        rewardsDistribution_plt.set_ylim(0, 1)
+
+        #
+        # Plot 3
+        #
+
+        collectedRewards_plt = self.fig.add_subplot(133)
+       
 
         reward = self.gaussianNormal(
                         x=self.bird_posY0, 
@@ -76,36 +134,10 @@ class GameLogic(tk.Frame):
         collectedRewards_plt.set_title("Obtained rewards")
         collectedRewards_plt.set_xlabel("Step")
         collectedRewards_plt.set_ylabel("Reward")
-        
+        collectedRewards_plt.grid(True)
+        collectedRewards_plt.set_ylim(0, 1)
         self.step_cnt += 1
-
-        ####
-
-
-        rewardsDistribution_plt = self.fig.add_subplot(122)
-        x = np.arange(0, self.height + 1 ) # inclusive
-        y = self.gaussianNormal(
-                        x=x,
-                        mu=self.first_column.middle_point, 
-                        sigma=self.first_column.free_space*self.free_space_factor
-                        )
-        y = y / self.gaussianNormal(
-                        x=self.first_column.middle_point, # <--- reach max
-                        mu=self.first_column.middle_point, 
-                        sigma=self.first_column.free_space*self.free_space_factor
-                        )
-
-        rewardsDistribution_plt.plot(x,y)
-        rewardsDistribution_plt.set_title("Reward distribution of y positions")
-        rewardsDistribution_plt.set_xlabel("y position")
-        rewardsDistribution_plt.set_ylabel("Reward")
-
-        rewardsDistribution_plt.axvline(x=self.bird_posY0, color="r")
-        rewardsDistribution_plt.text(self.bird_posY0 + 5, 0.5, "Bird pos", transform=rewardsDistribution_plt.transData, rotation=90, verticalalignment='center', color="r")
-
-        plt.tight_layout()     
-        #self.fig.set_size_inches(5, 2.5)
-
+        
         self.canvas_plot.draw()
         
 

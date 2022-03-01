@@ -25,7 +25,7 @@ class DDDQN(tf.keras.Model):
         v = self.v(x)
         a = self.a(x)
         q = v +(a -tf.math.reduce_mean(a, axis=1, keepdims=True))
-        return q
+        return q, v, a
 
     @tf.function
     def train_step(self, x, target):

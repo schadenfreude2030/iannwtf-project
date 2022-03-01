@@ -24,12 +24,12 @@ def main():
     with imageio.get_writer('test.gif', mode='I') as writer:
         while True:
             state = np.expand_dims(state, axis=0)
-            target = q_net.predict(state)
+            target, v, a  = q_net.predict(state)
 
             best_action = np.argmax(target, axis=1)[0]
             state, reward, done = env.step(best_action)
 
-            env.env.gameLogic.updatePlots()
+            env.env.gameLogic.updatePlots(v, a)
 
             if done:
                 env.reset()
