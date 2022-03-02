@@ -2,7 +2,7 @@ import tkinter as tk
 from FlappyBirdGym.GameLogic import *
 
 from threading import Thread, Event
-
+from FlappyBirdGym.Window import *
 import numpy as np
 
 import time
@@ -16,12 +16,12 @@ class FlappyBirdGym:
             self.gameLogic = GameLogic(windowMode=self.windowMode)
 
         else:
-            self.e = Event()
+            #self.e = Event()
     
             self.windowThread = Thread(target = self.windowLoop)
             self.windowThread.start() 
 
-            self.e.wait()
+            #self.e.wait()
             time.sleep(0.5)
 
         self.done = False
@@ -49,11 +49,12 @@ class FlappyBirdGym:
         self.gameLogic.reset()
 
     def windowLoop(self):
-        root = tk.Tk()
-        self.gameLogic = GameLogic(windowMode=self.windowMode, master=root)
-
-        self.e.set()
-        self.gameLogic.mainloop()
+        self.root = tk.Tk()
+        self.window = Window(windowMode=self.windowMode, master=self.root)
+        self.gameLogic = GameLogic(windowMode=self.windowMode, window=self.window)
+        self.window.gameLogic = self.gameLogic
+        #self.e.set()
+        self.window.mainloop()
    
     def close(self):
         self.gameLogic.quit()

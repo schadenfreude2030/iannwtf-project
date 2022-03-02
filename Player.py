@@ -10,7 +10,7 @@ def main():
     # stats
     # none
     env = EnvMananger(windowMode="stats")
-
+    
     q_net = DDDQN(num_actions=2)
     q_net.build((32,*env.observation_space_shape))
 
@@ -29,7 +29,7 @@ def main():
             best_action = np.argmax(target, axis=1)[0]
             state, reward, done = env.step(best_action)
 
-            env.env.gameLogic.updatePlots(v, a)
+            env.env.window.updatePlots(v, a)
 
             if done:
                 env.reset()
