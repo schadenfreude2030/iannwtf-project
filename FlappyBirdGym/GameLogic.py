@@ -19,17 +19,16 @@ class GameLogic:
 
         self.initLogic()
         
-        self.cnt = 0
-
 
     def initLogic(self):
-
+        
+        # Bird (rectangle) positions 
         self.bird_posX0 = 15
         self.bird_posX1 = 30
-
         self.bird_posY0 = int(self.height/2)
         self.bird_posY1 = int(self.height/2) + 15
         
+        # Draw it if window is used
         if self.windowMode != WindowMode.NO_WINDOW:
             self.window.canvas.create_rectangle(
                 self.bird_posX0, self.bird_posY0, self.bird_posX1, self.bird_posY1,
@@ -38,8 +37,8 @@ class GameLogic:
                 tags=('bird')
                 )
 
+        # Create logically columns
         self.column_width = 25
-
         self.columns = []
         for i in range(150, self.width + 50, 100):
             if len(self.columns) == 0:
@@ -48,6 +47,8 @@ class GameLogic:
                 self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
         
         self.first_column = self.columns[0]
+
+        self.add_new_column_cnt = 0
 
     def nextGameStep(self, action):
         
@@ -68,11 +69,11 @@ class GameLogic:
         self.columns = [column for column in self.columns if not column.getPosX() < -self.column_width]
         
         # Add a columns to the right (a columns was too left -> remove it -> add a new column to the right)
-        if self.cnt == 20:
+        if self.add_new_column_cnt == 20: # threshold reached
             self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=450, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
-            self.cnt = 0
+            self.add_new_column_cnt = 0
         else:
-            self.cnt += 1
+            self.add_new_column_cnt += 1
         
         #
         # Update bird 
@@ -133,6 +134,10 @@ class GameLogic:
         return killed, reward
     
     def getState(self):
+        # note: top and down column is a rectangle which can be described by four points (x0, x1, y0, y1)
+        #       this also applied to the bird
+
+        # Game state = points of bird, points of top column, points of down column  
         return np.array([self.bird_posX0, self.bird_posY0, \
                          self.bird_posX1, self.bird_posY1, \
                          self.first_column.top_pos_x0, self.first_column.top_pos_y0, \
@@ -141,19 +146,16 @@ class GameLogic:
                          self.first_column.down_pos_x1, self.first_column.down_pos_y1])
     
     def reset(self):
+        # Remove columns and bird
         if self.windowMode != WindowMode.NO_WINDOW:
             for column in self.columns:
                 column.delete()
 
             self.window.canvas.delete("bird")
-        self.cnt = 0
-        self.columns = []
-      
+
+        # Reset logic
         self.initLogic()
     
-    # def quit(self):
-    #     self.master.destroy()
-
     
     def gaussianNormal(self,x, mu=0, sigma=1):
         return (1/ (sigma*np.sqrt(2*np.pi)) )* np.exp((-1/2)* ((x-mu)/sigma)**2)
