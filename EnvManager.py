@@ -10,7 +10,8 @@ class EnvMananger():
         self.gym = FlappyBirdGym(windowMode) 
 
         # Provide easy access to window
-        self.window = self.gym.window 
+        if windowMode != WindowMode.NO_WINDOW:
+            self.window = self.gym.window 
 
         # env state = previous and last state of orginal env (gym) -> detect moving direction etc.
         current_state = self.gym.getState()

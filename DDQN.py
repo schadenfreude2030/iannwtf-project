@@ -16,7 +16,7 @@ class DDDQN(tf.keras.Model):
         self.loss_function = tf.keras.losses.MeanSquaredError()
     
     @tf.function
-    def call(self, x):
+    def call(self, x, returnInfo=False):
         
         layerActivations = [x]
         for layer in self.front_end_layer_list:
@@ -26,7 +26,11 @@ class DDDQN(tf.keras.Model):
         v = self.v(x)
         a = self.a(x)
         q = v +(a -tf.math.reduce_mean(a, axis=1, keepdims=True))
-        return q, v, a, layerActivations
+        
+        if returnInfo:
+            return q, v, a, layerActivations
+        else:
+            return q
 
     @tf.function
     def train_step(self, x, target):

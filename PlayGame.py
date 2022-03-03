@@ -14,6 +14,7 @@ def main():
     
     # Load model
     q_net = DDDQN(num_actions=env.num_actions)
+
     q_net.build((1,*env.observation_space_shape)) # need a batch size
     q_net.load_weights("./saved_models/trainied_weights_epoch_4100")
     
@@ -26,7 +27,7 @@ def main():
             # Add batch dim
             state = np.expand_dims(state, axis=0)
             # Predict best action
-            target, v, a, layerActivations  = q_net(state)
+            target, v, a, layerActivations  = q_net(state, returnInfo=True)
         
             target = target[0] # Remove batch dim
             best_action = np.argmax(target)

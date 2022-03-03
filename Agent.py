@@ -53,6 +53,9 @@ class Agent():
 
         target = self.q_net.predict(states)
         next_state_val = self.target_net.predict(next_state)
+        # print(self.target_net(next_state))
+        # print()
+
         max_action = np.argmax(self.q_net.predict(next_state), axis=1)
         batch_index = np.arange(self.batch_size, dtype=np.int32)
         q_target = np.copy(target)  #optional  

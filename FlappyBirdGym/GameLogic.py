@@ -40,11 +40,16 @@ class GameLogic:
         # Create logically columns
         self.column_width = 25
         self.columns = []
+        canvas = None 
+        
+        if self.windowMode != WindowMode.NO_WINDOW:
+            canvas = self.window.canvas
+
         for i in range(150, self.width + 50, 100):
             if len(self.columns) == 0:
-                self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=100) )
+                self.columns.append( Columns(windowMode=self.windowMode, canvas=canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=100) )
             else:
-                self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
+                self.columns.append( Columns(windowMode=self.windowMode, canvas=canvas, posX=i, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
         
         self.first_column = self.columns[0]
 
@@ -68,9 +73,14 @@ class GameLogic:
         # Logically remove columns
         self.columns = [column for column in self.columns if not column.getPosX() < -self.column_width]
         
+        canvas = None 
+        
+        if self.windowMode != WindowMode.NO_WINDOW:
+            canvas = self.window.canvas
+            
         # Add a columns to the right (a columns was too left -> remove it -> add a new column to the right)
         if self.add_new_column_cnt == 20: # threshold reached
-            self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=450, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
+            self.columns.append( Columns(windowMode=self.windowMode, canvas=canvas, posX=450, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
             self.add_new_column_cnt = 0
         else:
             self.add_new_column_cnt += 1

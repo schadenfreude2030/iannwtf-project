@@ -2,8 +2,8 @@ import numpy as np
 
 from Agent import *
 from EnvManager import *
+from FlappyBirdGym.WindowMode import *
 
-import matplotlib.pyplot as plt
 
 def main():
 
@@ -14,9 +14,10 @@ def main():
     num_episods = 50000
     update = 100 
 
-    env = EnvMananger()
+    env = EnvMananger(windowMode=WindowMode.NO_WINDOW)
     agent = Agent(input_dims=env.observation_space_shape,
                 num_actions=env.num_actions, batch_size=64)
+
 
     agent.q_net.summary()
     
@@ -34,7 +35,7 @@ def main():
             while not done_flag and cnt_steps < 500:
                 action = agent.select_action(state)
                 next_state, reward, done_flag  = env.step(action)
-
+                
                 agent.store_experience(state, action, next_state, reward, done_flag)
 
                 state = next_state

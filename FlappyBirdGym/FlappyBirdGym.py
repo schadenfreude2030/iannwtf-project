@@ -33,6 +33,9 @@ class FlappyBirdGym:
 
     def step(self, action):
 
+        if action < 0 or action > 1:
+            raise ValueError("Invalid action")
+
         if self.done:
             print("Error: Call step() on a finished game")
             return None 

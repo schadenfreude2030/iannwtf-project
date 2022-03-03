@@ -1,2 +1,2 @@
-model_checkpoint_path: "trainied_weights_epoch_4100"
-all_model_checkpoint_paths: "trainied_weights_epoch_4100"
+model_checkpoint_path: "trainied_weights_epoch_4900"
+all_model_checkpoint_paths: "trainied_weights_epoch_4900"
