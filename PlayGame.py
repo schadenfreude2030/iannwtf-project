@@ -13,7 +13,7 @@ def main():
     env = EnvMananger(windowMode=WindowMode.GAME_WINDOW_PLOTS)
     
     # Load model
-    q_net = DDDQN(num_actions=env.action_space)
+    q_net = DDDQN(num_actions=env.num_actions)
     q_net.build((1,*env.observation_space_shape)) # need a batch size
     q_net.load_weights("./saved_models/trainied_weights_epoch_4100")
     

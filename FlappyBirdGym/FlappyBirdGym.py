@@ -64,5 +64,5 @@ class FlappyBirdGym:
         self.gameLogic.quit()
     
     @property
-    def action_space(self):
+    def num_actions(self):
         return 2

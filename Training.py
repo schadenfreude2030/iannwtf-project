@@ -16,7 +16,7 @@ def main():
 
     env = EnvMananger()
     agent = Agent(input_dims=env.observation_space_shape,
-                num_actions=2, batch_size=64)
+                num_actions=env.num_actions, batch_size=64)
 
     agent.q_net.summary()
     

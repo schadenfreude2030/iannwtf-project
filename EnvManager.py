@@ -47,7 +47,7 @@ class EnvMananger():
         return self.state.flatten().shape
     
     @property
-    def action_space(self):
-        return self.gym.action_space
+    def num_actions(self):
+        return self.gym.num_actions
     
     
