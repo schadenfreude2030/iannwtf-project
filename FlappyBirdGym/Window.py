@@ -21,11 +21,12 @@ class Window(tk.Frame):
         self.gameLogic = None 
 
         if windowMode == WindowMode.GAME_WINDOW:
-            tk.Frame.__init__(self,master)
 
             self.window_height = game_height 
             self.window_width = game_width
 
+            # Create window
+            tk.Frame.__init__(self,master)
             master.geometry(f"{self.window_width}x{self.window_height}")
             self.canvas = tk.Canvas(master, height=self.window_height, width=self.window_width, bg='white')
 
@@ -33,13 +34,12 @@ class Window(tk.Frame):
         
         elif windowMode == WindowMode.GAME_WINDOW_PLOTS:
             
-            tk.Frame.__init__(self,master)
-
             # Window contains also plots
             self.window_height = game_height + 85
             self.window_width = game_width + 1200
 
-            # Game
+            # Create window
+            tk.Frame.__init__(self,master)
             master.geometry(f"{self.window_width}x{self.window_height}")
             self.canvas = tk.Canvas(master, height=game_height, width=game_width, bg='white')
             self.canvas.pack( side = LEFT)

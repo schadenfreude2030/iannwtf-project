@@ -51,33 +51,50 @@ class GameLogic:
 
     def nextGameStep(self, action):
         
+        #
+        # Update columns 
+        # 
+
+        # Move columns to left
         for column in self.columns:
             column.move(-5,0)
 
+            # remove if out of screen (only if window is used)
             if self.windowMode != WindowMode.NO_WINDOW:
                 if column.getPosX() < -self.column_width:
                     column.delete()
            
-            
+        # Logically remove columns
         self.columns = [column for column in self.columns if not column.getPosX() < -self.column_width]
-                
+        
+        # Add a columns to the right (a columns was too left -> remove it -> add a new column to the right)
         if self.cnt == 20:
             self.columns.append( Columns(windowMode=self.windowMode, canvas=self.window.canvas, posX=450, maxHeight=self.height, column_width=self.column_width, previousTopHeight=self.columns[-1].getTopHeight()) )
             self.cnt = 0
         else:
             self.cnt += 1
-            
-        delta_y = 10
+        
+        #
+        # Update bird 
+        # 
+
+        # y position update of bird
+        delta_y = 10 # default: go down
         if action == 1:
-            delta_y = -5
-      
+            delta_y = -5 # JUMP!
+
+        # window: also move rectangle
         if self.windowMode != WindowMode.NO_WINDOW:
             self.window.canvas.move('bird', 0, delta_y)
         
         self.bird_posY0 += delta_y
         self.bird_posY1 += delta_y
 
+        #
+        # Reward
+        # 
         
+        # ... is gaussian distributed
         reward = self.gaussianNormal(
                         x=self.bird_posY0, 
                         mu=self.first_column.middle_point, 
@@ -90,8 +107,10 @@ class GameLogic:
                         sigma=self.first_column.free_space*self.free_space_factor
                         )
 
+        # ... except if bird hit a column or ...
         killed = False
-        # too low or too high
+
+        # ... or too low or too high
         if self.height <= self.bird_posY1 or self.bird_posY0 <= 0:
             killed = True
             reward = -1
@@ -102,9 +121,8 @@ class GameLogic:
                 
                 if column.getPosX() + column.column_width <= self.bird_posX0 and not column.wasBirdFlownOver():
                     column.setBirdFlownOver(True)
-
                     self.first_column = self.columns[1]
-                    #reward = 10
+    
 
                 bird_pos = self.bird_posX0, self.bird_posY0, self.bird_posX1, self.bird_posY1
                 if column.touched(bird_pos):
