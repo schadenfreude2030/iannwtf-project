@@ -1,23 +1,31 @@
 import tkinter as tk
-from FlappyBirdGym.GameLogic import *
-
-from threading import Thread, Event
-from FlappyBirdGym.Window import *
+from threading import Thread
 import numpy as np
-
 import time
 
+from FlappyBirdGym.GameLogic import *
+from FlappyBirdGym.WindowMode import * 
+from FlappyBirdGym.Window import *
+
 class FlappyBirdGym:
-    def __init__(self, windowMode = "none"):
+
+
+    def __init__(self, windowMode = WindowMode.NO_WINDOW):
         
+        # Check for valid windowMode
+        if windowMode not in WindowMode.availableModes:
+            raise ValueError("Invalid windowMode")
+
         self.windowMode = windowMode
 
-        if windowMode == "none":
+        if windowMode == WindowMode.NO_WINDOW:
             self.gameLogic = GameLogic(windowMode=self.windowMode)
         else:
             self.windowThread = Thread(target = self.windowLoop)
             self.windowThread.start() 
 
+            # Let the thread init gameLogic and window
+            # both must exists in the thread (not in this thread)
             time.sleep(0.5)
 
         self.done = False

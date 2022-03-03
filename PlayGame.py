@@ -1,42 +1,45 @@
-from DDQN import *
-from EnvManager import *
 import pyautogui
-
 import imageio
 import cv2
-
 import time
 
+from DDQN import *
+from EnvManager import *
+from FlappyBirdGym.FlappyBirdGym import *
+from FlappyBirdGym.WindowMode import * 
+
 def main():
-    # game
-    # stats
-    # none
-    env = EnvMananger(windowMode="stats")
+
+    env = EnvMananger(windowMode=WindowMode.GAME_WINDOW_PLOTS)
     
+    # Load model
     q_net = DDDQN(num_actions=env.action_space)
-    q_net.build((32,*env.observation_space_shape))
-
+    q_net.build((1,*env.observation_space_shape)) # need a batch size
     q_net.load_weights("./saved_models/trainied_weights_epoch_4100")
-
-    state = env.getState()
 
     q_net.summary()
 
+    state = env.getState()
 
     with imageio.get_writer('test.gif', mode='I') as writer:
         while True:
+            # Add batch dim
             state = np.expand_dims(state, axis=0)
+            # Predict best action
             target, v, a  = q_net(state)
-
-            best_action = np.argmax(target, axis=1)[0]
+            target = target[0] # Remove batch dim
+            best_action = np.argmax(target)
+            
+            # Execute best action
             state, reward, done = env.step(best_action)
 
-            env.window.updatePlots(v, a)
+            # Update window plot
+            env.window.updatePlots(v, a, reward)
 
             if done:
                 env.reset()
             
-            time.sleep(0.1)
+            #time.sleep(0.1)
             #writer.append_data(getWindowImage(env))
 
 def getWindowImage(env):

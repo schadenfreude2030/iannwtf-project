@@ -3,6 +3,7 @@ import random
 from tkinter import *
 from PIL import ImageTk, Image
 
+from FlappyBirdGym.WindowMode import * 
 
 class Columns:
     id = 0
@@ -42,7 +43,7 @@ class Columns:
 
         self.tag_column_down = f"square_down_{self.id}"
 
-        if self.windowMode != "none":
+        if self.windowMode != WindowMode.NO_WINDOW:
             
             # self.img_top = Image.open("./FlappyBirdGym/pipe-green_top.png")
             
@@ -83,13 +84,13 @@ class Columns:
         self.down_pos_y0 += dy
         self.down_pos_y1 += dy
 
-        if self.windowMode != "none":
+        if self.windowMode != WindowMode.NO_WINDOW:
             self.canvas.move(self.tag_column_top, dx, dy)
             self.canvas.move(self.tag_column_down, dx, dy)
     
 
     def delete(self):
-        if self.windowMode != "none":
+        if self.windowMode != WindowMode.NO_WINDOW:
             self.canvas.delete(self.column_top)
             self.canvas.delete(self.column_down)
 

@@ -1,12 +1,13 @@
 import tkinter as tk
 from FlappyBirdGym.Columns import *
- 
+from FlappyBirdGym.FlappyBirdGym import *
+from FlappyBirdGym.WindowMode import * 
 
 import numpy as np
 
 
 class GameLogic:
-    def __init__(self, windowMode = "none", window = None, height=300, width=450):
+    def __init__(self, windowMode, window = None, height=300, width=450):
         
         self.windowMode = windowMode
         self.height = height
@@ -29,7 +30,7 @@ class GameLogic:
         self.bird_posY0 = int(self.height/2)
         self.bird_posY1 = int(self.height/2) + 15
         
-        if self.windowMode != "none":
+        if self.windowMode != WindowMode.NO_WINDOW:
             self.window.canvas.create_rectangle(
                 self.bird_posX0, self.bird_posY0, self.bird_posX1, self.bird_posY1,
                 fill="red",
@@ -53,7 +54,7 @@ class GameLogic:
         for column in self.columns:
             column.move(-5,0)
 
-            if self.windowMode != "none":
+            if self.windowMode != WindowMode.NO_WINDOW:
                 if column.getPosX() < -self.column_width:
                     column.delete()
            
@@ -70,7 +71,7 @@ class GameLogic:
         if action == 1:
             delta_y = -5
       
-        if self.windowMode != "none":
+        if self.windowMode != WindowMode.NO_WINDOW:
             self.window.canvas.move('bird', 0, delta_y)
         
         self.bird_posY0 += delta_y
@@ -122,7 +123,7 @@ class GameLogic:
                          self.first_column.down_pos_x1, self.first_column.down_pos_y1])
     
     def reset(self):
-        if self.windowMode:
+        if self.windowMode != WindowMode.NO_WINDOW:
             for column in self.columns:
                 column.delete()
 

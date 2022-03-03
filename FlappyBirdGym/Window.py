@@ -10,13 +10,17 @@ from matplotlib.figure import Figure
 
 import numpy as np
 
+from FlappyBirdGym.FlappyBirdGym import *
+from FlappyBirdGym.WindowMode import * 
+
+
 class Window(tk.Frame):
 
-    def __init__(self, windowMode = "none", master = None, game_height=300, game_width=450):
+    def __init__(self, windowMode, master = None, game_height=300, game_width=450):
         self.canvas = None
         self.gameLogic = None 
 
-        if windowMode == "game":
+        if windowMode == WindowMode.GAME_WINDOW:
             tk.Frame.__init__(self,master)
 
             self.window_height = game_height 
@@ -27,7 +31,7 @@ class Window(tk.Frame):
 
             self.canvas.pack()
         
-        elif windowMode == "stats":
+        elif windowMode == WindowMode.GAME_WINDOW_PLOTS:
             
             tk.Frame.__init__(self,master)
 
@@ -49,7 +53,7 @@ class Window(tk.Frame):
             self.steps = []
             self.step_cnt = 0
 
-    def updatePlots(self, v, a):
+    def updatePlots(self, v, a, reward):
 
         self.fig.clf()
 
@@ -113,19 +117,6 @@ class Window(tk.Frame):
 
         collectedRewards_plt = self.fig.add_subplot(133)
        
-
-        reward = self.gaussianNormal(
-                        x=self.gameLogic.bird_posY0, 
-                        mu=self.gameLogic.first_column.middle_point, 
-                        sigma=self.gameLogic.first_column.free_space*self.gameLogic.free_space_factor
-                        )
-        # normalize between [0,1]
-        reward = reward / self.gaussianNormal(
-                        x=self.gameLogic.first_column.middle_point, # <--- reach max
-                        mu=self.gameLogic.first_column.middle_point, 
-                        sigma=self.gameLogic.first_column.free_space*self.gameLogic.free_space_factor
-                        )
-
         self.steps.append(self.step_cnt)
         self.collectedRewards.append(reward)
 

@@ -1,10 +1,12 @@
 from FlappyBirdGym.FlappyBirdGym import *
+from FlappyBirdGym.WindowMode import *
+
 import numpy as np
 
 class EnvMananger():
 
-    def __init__(self, windowMode = False):
-
+    def __init__(self, windowMode):
+        
         self.gym = FlappyBirdGym(windowMode) 
 
         # Provide easy access to window
