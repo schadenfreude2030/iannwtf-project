@@ -14,14 +14,10 @@ class FlappyBirdGym:
 
         if windowMode == "none":
             self.gameLogic = GameLogic(windowMode=self.windowMode)
-
         else:
-            #self.e = Event()
-    
             self.windowThread = Thread(target = self.windowLoop)
             self.windowThread.start() 
 
-            #self.e.wait()
             time.sleep(0.5)
 
         self.done = False
@@ -53,8 +49,12 @@ class FlappyBirdGym:
         self.window = Window(windowMode=self.windowMode, master=self.root)
         self.gameLogic = GameLogic(windowMode=self.windowMode, window=self.window)
         self.window.gameLogic = self.gameLogic
-        #self.e.set()
+       
         self.window.mainloop()
    
     def close(self):
         self.gameLogic.quit()
+    
+    @property
+    def action_space(self):
+        return 2

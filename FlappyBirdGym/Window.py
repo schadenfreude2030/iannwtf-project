@@ -12,33 +12,42 @@ import numpy as np
 
 class Window(tk.Frame):
 
-    def __init__(self, windowMode = "none", master = None, height=300, width=450):
+    def __init__(self, windowMode = "none", master = None, game_height=300, game_width=450):
         self.canvas = None
         self.gameLogic = None 
-        self.height = height 
-        self.width = width
 
         if windowMode == "game":
             tk.Frame.__init__(self,master)
-            master.geometry(f"{width}x{height}")
-            self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='white')
+
+            self.window_height = game_height 
+            self.window_width = game_width
+
+            master.geometry(f"{self.window_width}x{self.window_height}")
+            self.canvas = tk.Canvas(master, height=self.window_height, width=self.window_width, bg='white')
 
             self.canvas.pack()
         
         elif windowMode == "stats":
             
             tk.Frame.__init__(self,master)
-            master.geometry(f"{width + 1200}x{height+ 85}")
-            self.canvas = tk.Canvas(master, height=self.height, width=self.width, bg='white')
+
+            # Window contains also plots
+            self.window_height = game_height + 85
+            self.window_width = game_width + 1200
+
+            # Game
+            master.geometry(f"{self.window_width}x{self.window_height}")
+            self.canvas = tk.Canvas(master, height=game_height, width=game_width, bg='white')
             self.canvas.pack( side = LEFT)
 
+            # Plots
             self.fig = Figure(figsize=(5,5), dpi=100)
             self.canvas_plot = FigureCanvasTkAgg(self.fig,master=master)
             self.canvas_plot.get_tk_widget().pack(side=RIGHT, fill=tk.BOTH, expand=True)
 
-        self.collectedRewards = []
-        self.steps = []
-        self.step_cnt = 0
+            self.collectedRewards = []
+            self.steps = []
+            self.step_cnt = 0
 
     def updatePlots(self, v, a):
 
