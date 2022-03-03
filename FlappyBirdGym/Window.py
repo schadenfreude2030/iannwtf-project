@@ -35,7 +35,7 @@ class Window(tk.Frame):
         elif windowMode == WindowMode.GAME_WINDOW_PLOTS:
             
             # Window contains also plots
-            self.window_height = game_height + 85
+            self.window_height = game_height + 550
             self.window_width = game_width + 1200
 
             # Create window
@@ -53,14 +53,14 @@ class Window(tk.Frame):
             self.steps = []
             self.step_cnt = 0
 
-    def updatePlots(self, v, a, reward):
+    def updatePlots(self, v, a, reward, layerActivations):
 
         self.fig.clf()
 
         #
-        # Plot 1
+        # Plot 1: State and adventage
         #
-        stateAdventage_plt = self.fig.add_subplot(131)
+        stateAdventage_plt = self.fig.add_subplot(231)
 
         # remove batch dim
         v = v[0]
@@ -81,10 +81,10 @@ class Window(tk.Frame):
         stateAdventage_plt.grid(True)
         
         #
-        # Plot 2
+        # Plot 2: Reward distribution
         #
 
-        rewardsDistribution_plt = self.fig.add_subplot(132)
+        rewardsDistribution_plt = self.fig.add_subplot(232)
         x = np.arange(0, self.gameLogic.height + 1 ) # inclusive
         y = self.gaussianNormal(
                         x=x,
@@ -112,10 +112,10 @@ class Window(tk.Frame):
         rewardsDistribution_plt.set_ylim(0, 1)
 
         #
-        # Plot 3
+        # Plot 3: Collected rewards
         #
 
-        collectedRewards_plt = self.fig.add_subplot(133)
+        collectedRewards_plt = self.fig.add_subplot(233)
        
         self.steps.append(self.step_cnt)
         self.collectedRewards.append(reward)
@@ -129,6 +129,52 @@ class Window(tk.Frame):
         collectedRewards_plt.set_ylim(0, 1)
         self.step_cnt += 1
         
+
+        #
+        # Plot 4: Activation input layer (= inputs)
+        #
+
+        activation_input_plt = self.fig.add_subplot(234)
+
+        activations = layerActivations[0] # input layer
+        activations = activations.numpy()[0] # remove batch dim
+        activations = np.reshape(activations, newshape=(4,6)) # input shape: (24,) -> (4,6)
+
+        activation_input_plt.set_title("Input")
+        activation_input_plt.set_axis_off()
+        activation_input_plt.imshow(activations)
+
+        #
+        # Plot 5: Activations hidden layer 1
+        #
+
+        activation_h1_plt = self.fig.add_subplot(235)
+
+        activations = layerActivations[1] # input layer
+        activations = activations.numpy()[0] # remove batch dim
+        activations = np.reshape(activations, newshape=(8,8)) # h1 shape: (64,) -> (8,8)
+
+        activation_h1_plt.set_title("Activation hidden layer 1")
+        activation_h1_plt.set_axis_off()
+        activation_h1_plt.imshow(activations)
+
+        #
+        # Plot 6: Activations hidden layer 2
+        #
+
+        activation_h2_plt = self.fig.add_subplot(236)
+
+        activations = layerActivations[2] # input layer
+        activations = activations.numpy()[0] # remove batch dim
+        activations = np.reshape(activations, newshape=(8,16)) # h1 shape: (64,) -> (8,8)
+
+        activation_h2_plt.set_title("Activation hidden layer 2")
+        activation_h2_plt.set_axis_off()
+        activation_h2_plt.imshow(activations)
+        
+      
+
+
         self.canvas_plot.draw() 
     
     def gaussianNormal(self,x, mu=0, sigma=1):

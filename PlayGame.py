@@ -16,7 +16,7 @@ def main():
     q_net = DDDQN(num_actions=env.action_space)
     q_net.build((1,*env.observation_space_shape)) # need a batch size
     q_net.load_weights("./saved_models/trainied_weights_epoch_4100")
-
+    
     q_net.summary()
 
     state = env.getState()
@@ -26,7 +26,8 @@ def main():
             # Add batch dim
             state = np.expand_dims(state, axis=0)
             # Predict best action
-            target, v, a  = q_net(state)
+            target, v, a, layerActivations  = q_net(state)
+        
             target = target[0] # Remove batch dim
             best_action = np.argmax(target)
             
@@ -34,7 +35,7 @@ def main():
             state, reward, done = env.step(best_action)
 
             # Update window plot
-            env.window.updatePlots(v, a, reward)
+            env.window.updatePlots(v, a, reward, layerActivations)
 
             if done:
                 env.reset()

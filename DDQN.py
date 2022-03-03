@@ -18,14 +18,15 @@ class DDDQN(tf.keras.Model):
     @tf.function
     def call(self, x):
         
+        layerActivations = [x]
         for layer in self.front_end_layer_list:
             x = layer(x)
-        
+            layerActivations.append(x)
 
         v = self.v(x)
         a = self.a(x)
         q = v +(a -tf.math.reduce_mean(a, axis=1, keepdims=True))
-        return q, v, a
+        return q, v, a, layerActivations
 
     @tf.function
     def train_step(self, x, target):
