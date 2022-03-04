@@ -75,8 +75,9 @@ class Window(tk.Frame):
         stateAdventage_barPlt[idxMaxAdventage].set_label("Best action")
 
         stateAdventage_plt.set_title("State and adventage")
+        stateAdventage_plt.set_ylabel("Magnitude")
 
-        stateAdventage_plt.set_ylim(-2,3)
+        stateAdventage_plt.set_ylim(-1,8)
         stateAdventage_plt.legend()
         stateAdventage_plt.grid(True)
         
@@ -142,8 +143,10 @@ class Window(tk.Frame):
 
         activation_input_plt.set_title("Input")
         activation_input_plt.set_axis_off()
-        activation_input_plt.imshow(activations)
-
+        
+        img = activation_input_plt.imshow(activations)
+        img.set_clim(0,300)
+        self.fig.colorbar(img)
         #
         # Plot 5: Activations hidden layer 1
         #
@@ -152,12 +155,12 @@ class Window(tk.Frame):
 
         activations = layerActivations[1] # input layer
         activations = activations.numpy()[0] # remove batch dim
-        activations = np.reshape(activations, newshape=(4,8)) # h1 shape: (32,) -> (4,8)
+        activations = np.reshape(activations, newshape=(8,8)) # h1 shape: (64,) -> (8,8)
 
         activation_h1_plt.set_title("Activation hidden layer 1")
         activation_h1_plt.set_axis_off()
-        activation_h1_plt.imshow(activations)
-
+        img = activation_h1_plt.imshow(activations)
+        self.fig.colorbar(img)
         #
         # Plot 6: Activations hidden layer 2
         #
@@ -166,12 +169,12 @@ class Window(tk.Frame):
 
         activations = layerActivations[2] # input layer
         activations = activations.numpy()[0] # remove batch dim
-        activations = np.reshape(activations, newshape=(8,8)) # h1 shape: (64,) -> (8,8)
+        activations = np.reshape(activations, newshape=(8,16)) # h1 shape: (128,) -> (8,16)
 
         activation_h2_plt.set_title("Activation hidden layer 2")
         activation_h2_plt.set_axis_off()
-        activation_h2_plt.imshow(activations)
-        
+        img = activation_h2_plt.imshow(activations)
+        self.fig.colorbar(img)
       
 
 

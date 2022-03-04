@@ -18,7 +18,7 @@ def main():
     q_net = DDDQN(num_actions=env.num_actions)
 
     q_net.build((1,*env.observation_space_shape)) # need a batch size
-    q_net.load_weights("./saved_models/trainied_weights_epoch_600")
+    q_net.load_weights("./saved_models/trainied_weights_epoch_810")
     
     q_net.summary()
 
