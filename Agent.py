@@ -14,7 +14,7 @@ class Agent():
         self.batch_size = batch_size
 
         self.strategy = EpsilonGreedyStrategy(start=1.0, end=0.05, decay=0.99)
-        self.replayMemory = ReplayMemory(capacity=300000, input_dims=input_dims)
+        self.replayMemory = ReplayMemory(capacity=500000, input_dims=input_dims)
 
         self.q_net = DDDQN(num_actions)
         self.q_net.build((self.batch_size ,*input_dims))

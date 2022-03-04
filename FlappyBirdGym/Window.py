@@ -152,7 +152,7 @@ class Window(tk.Frame):
 
         activations = layerActivations[1] # input layer
         activations = activations.numpy()[0] # remove batch dim
-        activations = np.reshape(activations, newshape=(8,8)) # h1 shape: (64,) -> (8,8)
+        activations = np.reshape(activations, newshape=(4,8)) # h1 shape: (32,) -> (4,8)
 
         activation_h1_plt.set_title("Activation hidden layer 1")
         activation_h1_plt.set_axis_off()
@@ -166,7 +166,7 @@ class Window(tk.Frame):
 
         activations = layerActivations[2] # input layer
         activations = activations.numpy()[0] # remove batch dim
-        activations = np.reshape(activations, newshape=(8,16)) # h1 shape: (64,) -> (8,8)
+        activations = np.reshape(activations, newshape=(8,8)) # h1 shape: (64,) -> (8,8)
 
         activation_h2_plt.set_title("Activation hidden layer 2")
         activation_h2_plt.set_axis_off()
