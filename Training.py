@@ -10,7 +10,7 @@ def main():
     file_path = "test_logs/test"
     train_summary_writer = tf.summary.create_file_writer(file_path)
 
-    num_episods = 5000
+    num_episodes = 5000
     update = 100
 
     env = EnvMananger(window_mode=WindowMode.NO_WINDOW)
@@ -23,7 +23,7 @@ def main():
     # Fill ReplayMemory
     done_flag = False
     state = env.reset()
-    while not agent.replayMemory.haveEnoughSamples():
+    while not agent.replay_memory.have_enough_samples():
         action = agent.select_action(state)
         next_state, reward, done_flag = env.step(action)
 
@@ -35,7 +35,7 @@ def main():
 
     with train_summary_writer.as_default():
 
-        for episode in range(num_episods):
+        for episode in range(num_episodes):
 
             done_flag = False
 
@@ -73,7 +73,8 @@ def main():
             tf.summary.scalar(f"Epsilon (EpsilonGreedyStrategy)", agent.strategy.get_exploration_rate(), step=episode)
             tf.summary.scalar(f"Steps per episode", cnt_steps, step=episode)
 
-            # print(f"Episode {episode}: score {round(score, 2)} and avg reward {round(np.mean(rewards), 2)} epsilon: {agent.strategy.get_exploration_rate()}")
+            # print(f"Episode {episode}: score {round(score, 2)} and avg reward {round(np.mean(rewards), 2)}
+            # epsilon: {agent.strategy.get_exploration_rate()}")
             print(f"  Episode: {episode}")
             print(f"  Epsilon: {round(agent.strategy.get_exploration_rate(), 2)}")
             print(f"    Score: {round(score, 2)}")
