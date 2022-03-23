@@ -1,6 +1,6 @@
 # Play Flappy Bird by applying Dueling Double Deep Q Learning 
 
-fill me
+![](./media/game_window_plots.mp4)
 
 
 ## Usage
