@@ -1,6 +1,5 @@
 import tensorflow as tf
 
-
 class DDDQN(tf.keras.Model):
     def __init__(self, num_actions):
         super(DDDQN, self).__init__()
@@ -15,21 +14,21 @@ class DDDQN(tf.keras.Model):
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         self.loss_function = tf.keras.losses.MeanSquaredError()
-
+    
     @tf.function
-    def call(self, x, return_info=False):
-
-        layer_activations = [x]
+    def call(self, x, returnInfo=False):
+        
+        layerActivations = [x]
         for layer in self.front_end_layer_list:
             x = layer(x)
-            layer_activations.append(x)
+            layerActivations.append(x)
 
         v = self.v(x)
         a = self.a(x)
-        q = v + (a - tf.math.reduce_mean(a, axis=1, keepdims=True))
-
-        if return_info:
-            return q, v, a, layer_activations
+        q = v +(a -tf.math.reduce_mean(a, axis=1, keepdims=True))
+        
+        if returnInfo:
+            return q, v, a, layerActivations
         else:
             return q
 
@@ -37,7 +36,7 @@ class DDDQN(tf.keras.Model):
     def train_step(self, x, target):
         with tf.GradientTape() as tape:
             predictions = self(x, training=True)
-            loss = self.loss_function(target, predictions)  # + tf.reduce_sum(self.losses)
-
+            loss = self.loss_function(target, predictions) #+ tf.reduce_sum(self.losses)
+        
         gradients = tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
