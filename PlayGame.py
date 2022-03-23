@@ -58,10 +58,6 @@ def getWindowImage(env):
     img = pyautogui.screenshot(region=(x, y, w, h))
     img = np.array(img, dtype=np.uint8)
 
-    #img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    #img = cv2.cvtColor(img,cv2.COLOR_RGB2BGR)
-    #img = cv2.resize(img, (img.shape[1]//2, img.shape[0]//2)) 
-
     return np.array(img, dtype=np.uint8)
     
    
