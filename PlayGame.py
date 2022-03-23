@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 def main():
 
-    env = EnvMananger(windowMode=WindowMode.GAME_WINDOW_PLOTS)
+    env = EnvMananger(windowMode=WindowMode.GAME_WINDOW)
     
     # Load model
     q_net = DDDQN(num_actions=env.num_actions)
@@ -40,7 +40,7 @@ def main():
             state, reward, done = env.step(best_action)
 
             # Update window plot
-            env.window.updatePlots(v, a, reward, layerActivations)
+            #env.window.updatePlots(v, a, reward, layerActivations)
 
             if done:
                 env.reset()
