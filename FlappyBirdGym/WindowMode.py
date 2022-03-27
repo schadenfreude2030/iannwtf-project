@@ -6,4 +6,4 @@ class WindowMode:
     GAME_WINDOW = 1
     GAME_WINDOW_PLOTS = 2
 
-    availableModes = list([NO_WINDOW, GAME_WINDOW, GAME_WINDOW_PLOTS])
+    available_modes = list([NO_WINDOW, GAME_WINDOW, GAME_WINDOW_PLOTS])
