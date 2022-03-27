@@ -11,6 +11,7 @@ It supports both a window and a no window mode.
 The AI was pretrainied (weights in `./saved_model`) for 810 episodes. 
 Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See results").
 
+
 ## Reward
 
 ## Model
@@ -45,6 +46,15 @@ dense_3 (Dense)              multiple                  258
 =================================================================
 Total params: 10,307
 ```
+
+## Evaluation
+
+In order to demonstrate the models performance, it did 250 steps.
+
+![Alt Text](./media/performancePlot.png)
+
+Overall, it archived an average reward of about 0.8.
+It never occured a collison with a column aka pipe.
 
 ## Usage
 
