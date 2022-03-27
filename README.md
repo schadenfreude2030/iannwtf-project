@@ -1,5 +1,5 @@
 # Play Flappy Bird by applying Dueling Double Deep Q Learning 
-# by Alaa Adam, Tobias Kretschel and Tim Niklas Witte 
+## by Alaa Adam, Tobias Kretschel and Tim Niklas Witte 
 
 This repository contains an AI which is able to play Flappy Bird.
 The AI is based on Dueling Double Deep Q Learning.
@@ -18,7 +18,7 @@ Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See re
 ### Input 
 The artifical neural network receives information about the positions of the 
 bird and of the "first column".
-Note that, "first column" is the nearst column to the bird.
+Note that, "first column" is the nearest column to the bird.
 x0, y0, x1 and y1 are coordinates to describe a rectangle.
 
 ```python
@@ -63,6 +63,8 @@ Besides, corresponding TensorBoard files are saved in `./test_logs/`
 ### Game Window: See results  
 
 ### Without plots
+
+![Alt Text](./media/game_window.gif)
 
 Run the `PlayGame.py`.
 
