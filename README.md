@@ -3,12 +3,14 @@
 
 This repository contains an AI which is able to play Flappy Bird.
 The AI is based on Dueling Double Deep Q Learning.
-For training the AI a Flappy Bird gym was developed (also contained in this repo).
+In order to train the AI, a Flappy Bird gym was developed which is also contained in this repository (see `./FlappyBirdGym`).
+Its usage will be explained at the end of the README.
 It supports both a window and a no window mode.
 
 ![Alt Text](./media/game_window.gif)
 
-The AI was pretrainied (weights in `./saved_model`) for 810 episodes. 
+The AI was pretrainied for 810 episodes.
+The weights are saved in `./saved_model`. 
 Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See results").
 
 
@@ -17,10 +19,18 @@ Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See re
 ## Model
 
 ### Input 
-The artifical neural network receives information about the positions of the 
-bird and of the "first column".
-Note that, "first column" is the nearest column to the bird.
-x0, y0, x1 and y1 are coordinates to describe a rectangle.
+The artifical neural network receives the previous and last game state as its input.
+Both game states are concatenated.
+
+```python
+[previous_game_state, current_game_state]
+```
+
+A game state is described as the coordinates of the bird and the so called "first column"
+which is nearest column to the bird.
+Both the bird and the column are rectangles.
+Note that, in order to represent a rectangle there are four points aka coordinates
+necessary: `x0, y0, x1, y1`
 
 ```python
 bird_pos_x0, bird_pos_y0,
@@ -31,11 +41,13 @@ first_column.down_pos_x0, first_column.down_pos_y0,
 first_column.down_pos_x1, first_column.down_pos_y1
 ```
 
-### Neural network structure
+At the beginning, the `previous_game_state` is a zero vector.
 
-The model has the following structure:
+### Artificial Neural Network
+
+The model has the following architecture:
 ```bash
-Model: "model"
+Model: "DDQN"
 __________________________________________________________________________________________________
  Layer (type)                   Output Shape         Param #     Connected to                     
 ==================================================================================================
@@ -72,7 +84,7 @@ ________________________________________________________________________________
 
 ## Evaluation
 
-In order to demonstrate the models performance, it did 250 steps.
+In order to demonstrate the models performance, it performs 250 steps.
 
 ![Alt Text](./media/performancePlot.png)
 
@@ -114,3 +126,5 @@ Run the `PlayGame.py`.
 ```bash
 python3 PlayGame.py
 ```
+
+### Flappy Bird Gym
