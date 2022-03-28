@@ -6,12 +6,12 @@ class DDDQN(tf.keras.Model):
         super(DDDQN, self).__init__()
 
         self.front_end_layer_list = [
-            tf.keras.layers.Dense(64, activation='tanh'),
-            tf.keras.layers.Dense(128, activation='tanh'),
+            tf.keras.layers.Dense(64, activation='tanh', name="tanh_0"),
+            tf.keras.layers.Dense(128, activation='tanh', name="tanh_1"),
         ]
 
-        self.v = tf.keras.layers.Dense(1, activation=None)
-        self.a = tf.keras.layers.Dense(num_actions, activation=None)
+        self.v = tf.keras.layers.Dense(1, activation=None, name="state")
+        self.a = tf.keras.layers.Dense(num_actions, activation=None, name="adventage")
 
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         self.loss_function = tf.keras.losses.MeanSquaredError()
@@ -32,6 +32,20 @@ class DDDQN(tf.keras.Model):
             return q, v, a, layer_activations
         else:
             return q
+    
+    # @tf.function causes problems when plotting the model
+    def call_onlyForPlotPurpose(self, x):
+
+        for layer in self.front_end_layer_list:
+            x = layer(x)
+    
+        v = self.v(x)
+        a = self.a(x)
+
+        tmp = tf.keras.layers.subtract([a, tf.math.reduce_mean(a, axis=1, keepdims=True)])
+        result = tf.keras.layers.Add()([v, tmp])
+        return result
+        
 
     @tf.function
     def train_step(self, x, target):

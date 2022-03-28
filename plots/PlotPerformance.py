@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import sys
+sys.path.append("../")
+
 from DDQN import *
 from EnvManager import *
 from FlappyBirdGym.FlappyBirdGym import *
@@ -13,7 +16,7 @@ def main():
     q_net = DDDQN(num_actions=env.num_actions)
 
     q_net.build((1, *env.observation_space_shape))  # need a batch size
-    q_net.load_weights("./saved_models/trainied_weights_epoch_810")
+    q_net.load_weights("../saved_models/trainied_weights_epoch_810")
 
     q_net.summary()
 
@@ -54,7 +57,7 @@ def main():
     plt.axhline(mean_collected_rewards, color='r', linestyle="--", label="Mean")
     plt.legend(loc='lower right')
     
-    plt.savefig("./media/performancePlot.png")
+    plt.savefig("../media/performancePlot.png")
 
 
 

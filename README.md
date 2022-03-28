@@ -33,18 +33,41 @@ first_column.down_pos_x1, first_column.down_pos_y1
 
 ### Neural network structure
 
+The model has the following structure:
 ```bash
-Layer (type)                 Output Shape              Param #   
-=================================================================
-dense (Dense)                multiple                  1600      
-_________________________________________________________________
-dense_1 (Dense)              multiple                  8320      
-_________________________________________________________________
-dense_2 (Dense)              multiple                  129       
-_________________________________________________________________
-dense_3 (Dense)              multiple                  258       
-=================================================================
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ [Previous game state, current   [(None, 24)]        0           []                               
+ game state] (InputLayer)                                                                         
+                                                                                                  
+ tanh_0 (Dense)                 (None, 64)           1600        ['[Previous game state, current g
+                                                                 ame state][0][0]']               
+                                                                                                  
+ tanh_1 (Dense)                 (None, 128)          8320        ['tanh_0[0][0]']                 
+                                                                                                  
+ adventage (Dense)              (None, 2)            258         ['tanh_1[0][0]']                 
+                                                                                                  
+ tf.math.reduce_mean (TFOpLambd  (None, 1)           0           ['adventage[0][0]']              
+ a)                                                                                               
+                                                                                                  
+ state (Dense)                  (None, 1)            129         ['tanh_1[0][0]']                 
+                                                                                                  
+ subtract (Subtract)            (None, 2)            0           ['adventage[0][0]',              
+                                                                  'tf.math.reduce_mean[0][0]']    
+                                                                                                  
+ add (Add)                      (None, 2)            0           ['state[0][0]',                  
+                                                                  'subtract[0][0]']               
+                                                                                                  
+==================================================================================================
 Total params: 10,307
+Trainable params: 10,307
+Non-trainable params: 0
+__________________________________________________________________________________________________
+
+![Alt Text](./media/modelPlot.png)
+
 ```
 
 ## Evaluation
