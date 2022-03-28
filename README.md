@@ -13,7 +13,6 @@ The AI was pretrainied for 810 episodes.
 The weights are saved in `./saved_model`. 
 Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See results").
 
-
 ## Reward System
 
 The reward is gaussian distributed where x is `bird_posY0`.
@@ -91,6 +90,14 @@ ________________________________________________________________________________
 ```
 
 ![Alt Text](./media/modelPlot.png)
+
+## Pre-trained
+
+As mentioned above, the model was trained for 810 episodes.
+
+![Alt Text](./media/trainingPlot_noSmoothing.png)
+
+
 
 ## Evaluation
 

@@ -21,10 +21,38 @@ def main():
     stepsPerEpisode = df_stepsPerEpisode["Value"]
 
     x = np.arange(len(epsilon))
-    plt.plot(x, stepsPerEpisode)
+
+    fig, ax = plt.subplots(nrows=1, ncols=4)
+    ax[0].plot(x, avg_reward)
+    ax[0].set_title("Average reward per episode")
+    ax[0].set_xlabel("Episode")
+    ax[0].set_ylabel("Average reward")
+    ax[0].grid(True)
+
+    ax[1].plot(x, epsilon)
+    ax[1].set_title("Epsilon Greedy Strategy")
+    ax[1].set_xlabel("Episode")
+    ax[1].set_ylabel("Epsilon")
+    ax[1].grid(True)
+
+    ax[2].plot(x, score)
+    ax[2].set_title("Score per episode")
+    ax[2].set_xlabel("Episode")
+    ax[2].set_ylabel("Score")
+    ax[2].grid(True)
+
+    ax[3].plot(x, stepsPerEpisode)
+    ax[3].set_title("Steps per episode")
+    ax[3].set_xlabel("Episode")
+    ax[3].set_ylabel("Steps")
+    ax[3].grid(True)
+
+    #plt.tight_layout()
+    fig.set_size_inches(w=17.5, h=4)
+    plt.savefig("../media/trainingPlot_noSmoothing.png")
     plt.show()
 
-    #plt.savefig("../media/performancePlot.png")
+    
 
 
 
