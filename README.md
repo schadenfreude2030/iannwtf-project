@@ -66,9 +66,9 @@ Trainable params: 10,307
 Non-trainable params: 0
 __________________________________________________________________________________________________
 
-![Alt Text](./media/modelPlot.png)
-
 ```
+
+![Alt Text](./media/modelPlot.png)
 
 ## Evaluation
 
