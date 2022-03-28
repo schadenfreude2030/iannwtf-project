@@ -16,9 +16,7 @@ Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See re
 
 ## Reward System
 
-```math
-SE = \frac{\sigma}{\sqrt{n}}
-```
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
 
 ![Alt Text](./media/rewardSystem.png)
 
