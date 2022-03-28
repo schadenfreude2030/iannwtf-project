@@ -14,7 +14,13 @@ The weights are saved in `./saved_model`.
 Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See results").
 
 
-## Reward
+## Reward System
+
+```math
+SE = \frac{\sigma}{\sqrt{n}}
+```
+
+![Alt Text](./media/rewardSystem.png)
 
 ## Model
 
