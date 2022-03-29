@@ -22,7 +22,8 @@ It is normalized to be between 0 and 1 in order to prevent tiny q values.
 
 The two vertical ordered columns which are the nearest to the bird are considered for the reward calculation.
 µ denotes the y coordinate of the center of the space between these two columns.
-σ denotes the length in y direction of this space.
+σ denotes the scaled length in y direction of this space.
+In order to force the model to control the bird more in the middle of space the length of this space is scaled by a factor of 0.125.
 
 ![Alt Text](./media/rewardSystem.png)
 
