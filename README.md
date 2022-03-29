@@ -17,7 +17,9 @@ Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See re
 
 The reward is gaussian distributed where x is `bird_posY0`.
 
-![Alt Text](./media/formular.png)
+![Alt Text](./media/normalDistribution.png)
+
+![Alt Text](./media/rewardFormula.png)
 
 µ denotes the y coordinate of the center of space between the two vertical columns. 
 σ denotes the length in y direction of the space between the two vertical columns.
