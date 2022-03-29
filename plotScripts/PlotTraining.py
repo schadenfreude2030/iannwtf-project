@@ -62,7 +62,7 @@ def main():
     #plt.tight_layout()
     
     fig.set_size_inches(w=17.5, h=4)
-    plt.savefig("../media/trainingPlot_noSmoothing.png")
+    plt.savefig("../media/trainingPlot.png")
     plt.show()
 
     

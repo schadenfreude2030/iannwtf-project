@@ -95,7 +95,7 @@ ________________________________________________________________________________
 
 As mentioned above, the model was trained for 810 episodes.
 
-![Alt Text](./media/trainingPlot_noSmoothing.png)
+![Alt Text](./media/trainingPlot.png)
 
 
 
