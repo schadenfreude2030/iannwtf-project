@@ -166,7 +166,7 @@ The plot is structured as follows:
 ```
 
 ### Create a GIF
-Screenshots are taken from the entire game window (including plots if activated) and stored within a GIF
+Screenshots are taken from the entire game window (including plots if activated) and stored within in GIF file.
 
 ```bash
 python3 PlayGame.py --mode 0 --gif "./PlayFlappyBird.gif"
