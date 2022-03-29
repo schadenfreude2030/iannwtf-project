@@ -126,22 +126,51 @@ Besides, corresponding TensorBoard files are saved in `./test_logs/`
 
 ### Without plots
 
+The game window without plots opens.
+In this window the AI play Flappy Bird.
+
 ![Alt Text](./media/game_window.gif)
 
-Run the `PlayGame.py`.
-
 ```bash
+python3 PlayGame.py --mode 0
 python3 PlayGame.py
 ```
 
+Note that, if `--mode` is not passed as an argument it is default set to `0`.
+
 ### With plots
+
+The game window with plots opens.
+In this window the AI play Flappy Bird.
 
 ![Alt Text](./media/game_window_plots.gif)
 
-Run the `PlayGame.py`.
 
 ```bash
-python3 PlayGame.py
+python3 PlayGame.py --mode 1
+```
+
+The plot is structured as follows:
+
+```bash
+(1) | (2) | (3)
+----+-----+----
+(4) | (5) | (6)
+
+(1) = State and adventage (dualing network architecture)
+(2) = Reward distribution (all possible rewards considering the current y position)
+(3) = Collected rewards
+(4) = Input to the ANN
+(5) = Activation in the hidden layer no. 1
+(6) = Activation in the hidden layer no. 2
+```
+
+### Create a GIF
+Screenshots are taken from the entire game window (including plots if activated) and stored within a GIF
+
+```bash
+python3 PlayGame.py --mode 0 --gif "./PlayFlappyBird.gif"
+python3 PlayGame.py --mode 1 --gif "./PlayFlappyBird.gif"
 ```
 
 ### Flappy Bird Gym
