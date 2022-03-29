@@ -1,3 +1,5 @@
+import argparse
+
 import imageio
 import pyautogui
 
@@ -7,8 +9,39 @@ from FlappyBirdGym.FlappyBirdGym import *
 from FlappyBirdGym.WindowMode import *
 
 
+class dummy_context_mgr():
+    def __enter__(self):
+        return None
+    def __exit__(self, exc_type, exc_value, traceback):
+        return False
+
+
+def checkMode(mode):
+    
+    if mode != "0" and mode != "1":
+        raise argparse.ArgumentTypeError("Invalid mode option. Use \"0\" = game window or \"1\" = game window with plots")
+
+    return mode
+
 def main():
-    env = EnvMananger(window_mode=WindowMode.GAME_WINDOW)
+
+    # Set up ArgumentParser
+    parser = argparse.ArgumentParser(description="An AI plays Flappy Bird.")
+    parser.add_argument("--mode", help="Define the window mode (default: \"0\") \"0\" = game window or \"1\" = game window with plots", type=checkMode, required=False)
+    parser.add_argument("--gif", help="File path where the GIF (screenshots of the window) will be saved.", required=False)
+
+    args = parser.parse_args()
+
+    window_mode = WindowMode.GAME_WINDOW
+    if args.mode == "1":
+        window_mode = WindowMode.GAME_WINDOW_PLOTS
+
+    gif_path = ""
+    if args.gif != None:
+        gif_path = args.gif
+
+    # Init env
+    env = EnvMananger(window_mode=window_mode)
 
     # Load model
     q_net = DDDQN(num_actions=env.num_actions)
@@ -20,9 +53,11 @@ def main():
 
     state = env.get_state()
 
-    time.sleep(3)
+    # Let the user time to move the mouse from the window
+    if gif_path != "":
+        time.sleep(3)
 
-    with imageio.get_writer('test.gif', mode='I') as writer:
+    with imageio.get_writer(gif_path, mode='I') if gif_path != "" else dummy_context_mgr() as gif_writer:
         while True:
             # Add batch dim
             state = np.expand_dims(state, axis=0)
@@ -35,15 +70,20 @@ def main():
             # Execute best action
             state, reward, done = env.step(best_action)
 
-            # Update window plot
-            # env.window.updatePlots(v, a, reward, layer_activations)
-
             if done:
                 env.reset()
 
-            # time.sleep(0.1)
-            img = get_window_image(env)
-            writer.append_data(img)
+            # Update window plot
+            if window_mode == WindowMode.GAME_WINDOW_PLOTS:
+                env.window.updatePlots(v, a, reward, layer_activations)
+
+            # slow it down 
+            if window_mode == WindowMode.GAME_WINDOW:
+                time.sleep(0.05)
+
+            if gif_path != "":
+                img = get_window_image(env)
+                gif_writer.append_data(img)
 
 
 def get_window_image(env):
