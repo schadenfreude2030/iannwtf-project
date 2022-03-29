@@ -15,15 +15,14 @@ Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See re
 
 ## Reward System
 
-The reward is gaussian distributed where x is `bird_posY0`.
-
-![Alt Text](./media/normalDistribution.png)
+The reward is normal distributed where x is `bird_posY0`.
+It is normalized to be between 0 and 1 in order to prevent tiny q values.
 
 ![Alt Text](./media/rewardFormula.png)
 
-µ denotes the y coordinate of the center of space between the two vertical columns. 
-σ denotes the length in y direction of the space between the two vertical columns.
-Note that, the two vertical columns are considers which are nearest to the bird.
+The two vertical ordered columns which are the nearest to the bird are considered for the reward calculation.
+µ denotes the y coordinate of the center of the space between these two columns.
+σ denotes the length in y direction of this space.
 
 ![Alt Text](./media/rewardSystem.png)
 
