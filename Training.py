@@ -13,14 +13,14 @@ def main():
     num_episods = 5000
     update = 100
 
+    # Init gym
     env = EnvMananger(window_mode=WindowMode.NO_WINDOW)
     agent = Agent(input_dims=env.observation_space_shape,
                   num_actions=env.num_actions, batch_size=64)
-
     agent.q_net.summary()
 
+    # Fill ReplayMemory until enough samples are collected
     print("Fill ReplayMemory...")
-    # Fill ReplayMemory
     done_flag = False
     state = env.reset()
     while not agent.replay_memory.have_enough_samples():
@@ -33,6 +33,7 @@ def main():
             state = env.reset()
             done_flag = False
 
+    # Start actual training
     with train_summary_writer.as_default():
 
         for episode in range(num_episods):
@@ -58,9 +59,10 @@ def main():
                 rewards.append(reward)
                 cnt_steps += 1
 
+            # Reduce epsilon after each episode
             agent.strategy.reduce_epsilon()
 
-            # save only when we are learning
+            # Update target network
             if episode % update == 0:
                 agent.update_target()
 
@@ -79,10 +81,6 @@ def main():
             print(f"Avg Score: {round(np.mean(rewards), 2)}")
             print(f"    Steps: {cnt_steps}")
             print("------------------------")
-
-            # okay: 1
-            # dead: -1
-            # avoid: 0.01 vs 1
 
 
 if __name__ == '__main__':
