@@ -1,8 +1,4 @@
 from FlappyBirdGym.FlappyBirdGym import *
-import matplotlib.pyplot as plt
-
-import numpy as np
-
 
 def main():
     gym = FlappyBirdGym(window_mode=False)

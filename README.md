@@ -6,6 +6,7 @@ The AI is based on Dueling Double Deep Q Learning.
 In order to train the AI, a Flappy Bird gym was developed which is also contained in this repository (see `./FlappyBirdGym`).
 Its usage will be explained at the end of the README.
 It supports both a window and a no window mode.
+Besides, the interface of the Flappy Bird gym is similar to the gyms developed by [OpenAI](https://gym.openai.com/).
 
 ![Alt Text](./media/game_window.gif)
 
@@ -176,3 +177,24 @@ python3 PlayGame.py --mode 1 --gif "./PlayFlappyBird.gif"
 ```
 
 ### Flappy Bird Gym
+
+Due to the gym has a similar interface as the gyms provides by [OpenAI](https://gym.openai.com/),
+it is very easy to use.
+
+```python3
+
+gym = FlappyBirdGym(window_mode=False)
+
+    while True:
+        action = ... # must be 0 (no jump) or 1 (jump)
+        state, reward, done = gym.step(action)
+
+        print("Reward: ", reward, "Done: ", done)
+
+        if done:
+            gym.reset()
+```
+
+As code example is shown in `EnvManualRun.py`. 
+The user must enter "0" (no jump) or "1" (jump) to interact with the enviroment.
+Besides, the received reward is printed in the terminal.
