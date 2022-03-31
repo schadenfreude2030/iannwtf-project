@@ -195,6 +195,6 @@ gym = FlappyBirdGym(window_mode=False)
             gym.reset()
 ```
 
-As code example is shown in `EnvManualRun.py`. 
+A code example is shown in `EnvManualRun.py`:
 The user must enter "0" (no jump) or "1" (jump) to interact with the enviroment.
 Besides, the received reward is printed in the terminal.
