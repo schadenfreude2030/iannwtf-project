@@ -103,9 +103,35 @@ ________________________________________________________________________________
 
 ![Alt Text](./media/modelPlot.png)
 
-## Pre-trained
+### Hyperparameters
+
+```python3
+
+General:
+    learning rate = 0.001
+    optimizer = Adam
+    loss function = mean squared error
+    batch size = 32
+
+EpsilonGreedyStrategy:
+    start = 1.0 
+    end = 0.05
+    decay = 0.99 (multiplicative decay after each episode until end is reached)
+
+ReplayMemory:
+    capacity = 500.000
+    num_samples = 250.000 # number until training the network starts
+    sampling process: samples with higher reward preferred
+
+Deep Q Learning:
+    gamma = 0.99
+    update = 100 # number of episodes when weights of qnet = weights of target net
+```
+
+## Pre-trained model
 
 As mentioned above, the model was trained for 810 episodes.
+Episodes for filling the ReplayMemory are not counted in this number of episodes.
 
 ![Alt Text](./media/trainingPlot.png)
 
