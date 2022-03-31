@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from typing import List
 
 import matplotlib
 
@@ -10,18 +11,38 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
 import numpy as np
+import tensorflow as tf
 
 from FlappyBirdGym.FlappyBirdGym import *
 from FlappyBirdGym.WindowMode import *
 
 
 def gaussian_normal(x, mu=0, sigma=1):
+    """Calculates the corresponding y value of the normal distribution for the x value. 
+
+    Keyword arguments:
+    x -- x value
+    mu -- mean
+    sigma -- standard deviation
+
+    Return:
+    y value
+    """
     return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp((-1 / 2) * ((x - mu) / sigma) ** 2)
 
 
 class Window(tk.Frame):
 
-    def __init__(self, window_mode, master=None, game_height=300, game_width=450):
+    def __init__(self, window_mode: int, master=None, game_height=300, game_width=450):
+        """Init the window including canvas.
+
+        Keyword arguments:
+        window_mode -- 0 = no window, 1 = only game window, 2 = game window with plots
+        master -- root window object
+        game_height -- height of the window
+        game_width -- width of the window
+        """
+
         self.canvas = None
         self.game_logic = None
 
@@ -58,7 +79,16 @@ class Window(tk.Frame):
             self.steps = []
             self.step_cnt = 0
 
-    def updatePlots(self, v, a, reward, layer_activations):
+    def updatePlots(self, v: tf.Tensor, a: tf.Tensor, reward: float, layer_activations: list):
+
+        """Update the plots.
+
+        Keyword arguments:
+        v -- current state (DDQN)
+        a -- current adventage (DDQN)
+        reward -- current reward
+        layer_activations -- list of layer activations
+        """
 
         self.fig.clf()
 
