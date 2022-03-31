@@ -10,14 +10,25 @@ from FlappyBirdGym.WindowMode import *
 
 
 class dummy_context_mgr():
+    """
+    A null object required for a conditional with statement
+    """
     def __enter__(self):
         return None
     def __exit__(self, exc_type, exc_value, traceback):
         return False
 
 
-def checkMode(mode):
-    
+def checkMode(mode: int):
+    """
+    Check if mode is "0" or "1"
+
+    Keyword arguments:
+        mode -- Must be "0" or "1" otherwise an exception will be thrown
+
+    Return:
+        mode 
+    """
     if mode != "0" and mode != "1":
         raise argparse.ArgumentTypeError("Invalid mode option. Use \"0\" = game window or \"1\" = game window with plots")
 
@@ -86,7 +97,16 @@ def main():
                 gif_writer.append_data(img)
 
 
-def get_window_image(env):
+def get_window_image(env: EnvMananger):
+    """
+    Create a screenshot of the entire window
+
+    Keyword arguments:
+        env -- EnvMananger
+
+    Return:
+        screenshot in form of a np.array
+    """
     canvas = env.gym.window
     x, y = canvas.winfo_rootx(), canvas.winfo_rooty()
     w, h = canvas.window_width, canvas.window_height  # canvas.winfo_width(), canvas.winfo_height()
