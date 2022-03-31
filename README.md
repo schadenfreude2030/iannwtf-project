@@ -185,14 +185,14 @@ it is very easy to use.
 
 gym = FlappyBirdGym(window_mode=False)
 
-    while True:
-        action = ... # must be 0 (no jump) or 1 (jump)
-        state, reward, done = gym.step(action)
+while True:
+    action = ... # must be 0 (no jump) or 1 (jump)
+    state, reward, done = gym.step(action)
 
-        print("Reward: ", reward, "Done: ", done)
+    print("Reward: ", reward, "Done: ", done)
 
-        if done:
-            gym.reset()
+    if done:
+        gym.reset()
 ```
 
 A code example is shown in `EnvManualRun.py`:
