@@ -47,10 +47,13 @@ Both game states are concatenated.
 [previous_game_state, current_game_state]
 ```
 
-A game state is described as the coordinates of the bird and the so called "first column"
-which is nearest column to the bird.
-Both the bird and the column are rectangles.
-Note that, in order to represent a rectangle there are four points aka coordinates
+A game state is described as a concatenation of coordinates of the bird and of
+the so called "first column".
+This "first column" consists of two columns: One columns is placed on top of the 
+other one (down).
+Between these two columns there is a space in between.
+Both the bird and these columns are rectangles.
+Note that, in order to represent a rectangle there are four coordinates
 necessary: `x0, y0, x1, y1`
 
 ```python
@@ -132,6 +135,7 @@ Deep Q Learning:
 
 As mentioned above, the model was trained for 810 episodes.
 Episodes for filling the ReplayMemory are not counted in this number of episodes.
+Note that, score denotes the sum of all obtained rewards within an episode.
 
 ![Alt Text](./media/trainingPlot.png)
 
