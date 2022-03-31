@@ -1,0 +1,27 @@
+% zum Zwischenspeichern, falls ich noch Änderungen an den UMLs mache
+
+% GYM:
+
+[FlappyBirdGym]1-1>[GameLogic]1-*>[Columns]
+[FlappyBirdGym]1-1>[Window]
+[GameLogic]1-1>[Window]
+[Columns]*-1>[Window]
+
+[FlappyBirdGym|-window: Window;-gameLogic: GameLogic;+num_actions: int|step(action);reset;get_state;close]
+
+[GameLogic|-window: Window;bird_pos_x0: int;-bird_pos_x1: int;-bird_pos_y0: int;-bird_pos_y1: int;-columns: Columns［］|next_game_step(action);get_state;reset]
+
+[Columns|-id: int;-window: Window;+top_height: int;-free_space: int; +pos_x: int; +bird_flown_over: bool|move(dx, dy);delete;touched(pos_bird)]
+
+% DDQL:
+[Training]1-1>[Agent]1-2>[DDDQN]
+[Training]1-1>[EnvManager]
+[Agent]1-1>[ReplayMemory]
+[Agent]1-1>[EpsilonGreedyStrategy]
+
+[Training|-env: EnvManager; -agent: Agent|main]
+[Agent|-strategy: EpsilonGreedyStrategy; -replay_memory: ReplayMemory; -q_net: DDDQN, -target_net: DDDQN|select_action(state); store_experience(state, action, next_state, reward, done); update_target; train_step;]
+[DDDQN|-layer_list: Array; -optimizer: keras.optimizers.Adam; -loss_function: keras.losses.MeanSquaredError|call(x, return_info); train_step(x, target)]
+[ReplayMemory|-states: Array; -actions: Array; -next_states: Array; -rewards: Array; -done_flags: Array|store_experience(state, action, next_state, reward, done_flag); sample_batch(batch_size)]
+
+[EpsilonGreedyStrategy|+epsilon: float; -decay: float|reduceEpsilon]

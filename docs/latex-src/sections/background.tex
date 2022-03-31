@@ -1,0 +1,33 @@
+\section{Background}
+\subsection{Flappy Bird}
+"Flappy Bird" was a popular mobile game created in 2013. The game's success quickly caused many imitations which sort of constituted a genre of "Flappy Bird"-like games. The game consists of a player controlled bird which attempts to fly between columns of pipes without hitting them. The player's only possible action is the ability to let the bird "flap", by which it jumps up a certain amount of units. While not flapping, the bird continuously falls towards the ground. For each column of pipes the bird is able to pass, the players score increases. Once the bird touches a pipe, the game ends.
+\par
+We decided to train an ANN on Flappy Bird because firstly, the game has a good difficulty to be appropriate for a project of this scope. Secondly, compared to similar, usually older games like Pong, Tetris or Space Invaders, the number of existing solutions to the problem is a lot lower.
+
+\subsection{Problem breakdown}
+Considering that we want an ANN to successfully play Flappy Bird, the task that we are facing is the following: 
+% TODO anderen Befehl verwenden, der das selbe wie Quote erreicht (weil quote ist eigentlich nicht korrekt, ist ja kein Zitat sondern eher eine Definition oder so.
+\begin{quote}
+For each time step of the game, given an input in the form of a series of frames, the ANN shall return a binary output that the bird shall either flap or not flap.
+\end{quote}
+
+The input has to consist of multiple frames in order to pass information about the current momentum of the bird to the ANN. Since the player has the possibility to "flap" at each time step, the ANN has to return a value for every of them.
+
+\subsection{Reinforcement learning}
+Reinforcement Learning already existed before deep neural networks became popular. For certain problems, it was quite successful, but ran into limitations in terms of memory and computational cost. Combining RL with deep learning was able to help overcome some of these limitations. This combination is called Deep Reinforcement Learning (DRL). Many popular deep learning applications use DRL, like the ANN AlphaGo which defeated a human player in Go, and its successor AlphaZero which beat the until then best chess engine Stockfish (for more details on this see \cite{DRLsurv}).
+\par
+We decided to use DRL to solve our problem of playing Flappy Bird. As we learned during the course, it is suited for problems where an agent has to chose among a set of actions in an environment in order to maximise his reward. As opposed to supervised learning, there is no single correct way to solve the problem. In our case, the set of actions would consist of the actions "flap" and "no flap", and the reward is determined by whether the bird is able to pass the pipes. At what exact points the flapping happens will be chosen entirely by the network.
+
+
+\subsection{Deep Q-Learning}
+During the IANNwTF course, we were taught the difficulties in finding the right trade-off between exploration and exploitation when doing RL. In order to overcome this issue, we chose to use a technique called "Double Deep Q Learning" as it is presented in a paper by van Hasselt\cite{DDQL}. In DDQL, we essentially use two seperate networks with different weights. One of them is used to select which action to perform and the other is used to evaluate that action. In regular intervals, the weights of one network are copied to the other in order to prevent them from diverging too much. A detailed description of how the algorithm works in theory can be read in section "Deep Q Networks" (\cite[p. 2]{DDQL}) of the mentioned paper. A detailed description of how exactly we implemented the algorithm will follow in section \ref{sec:ddql}.
+
+\subsection{Related approaches}\label{sec:related}
+
+In \cite{chendeep} deep reinforcement learning has been used with the game Flappy Bird. The author focused on having their network be able to learn the game from raw graphical input and used certain image pre-processing algorithms, followed by convolutional layers in their network to extract game information from the graphical representation. In our project, we were more interested in how the network learns to play the game and did not have our input as abstract. Apart from that focus on graphical processing, their approach is rather similar to ours. In the section \ref{sec:eval} we will perform a more detailed comparison.
+\par
+There is also an interesting implementation by the online blog AskForGameTask (\cite{geneticFB}), which uses a genetic algorithm in combination with neural networks to learn Flappy Bird. In addition to using a genetic algorithm, it also differs to our project in that the entire code was written in JavaScript and can be run in a browser.
+\par
+A group of Indian researchers has also dealt with Flappy Bird, as they describe it in \cite{performanceFB}. Their paper does not focus on learning the game, but instead uses a "finished" algorithm and analyses it in-depth by tweaking parameters and observing how they change the outcome.
+\par
+We would also like to mention \cite{playingatari} and \cite{humanlvl}. These papers describe projects where deep RL has been used to play classic Atari games and had a big influence on the development of deep RL and its application to video games.

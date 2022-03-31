@@ -1,0 +1,65 @@
+\documentclass[a4paper,12pt, listof=totoc,toc=sectionentrywithdots]{scrartcl}
+
+\usepackage{amsmath,amsthm,amssymb,amsfonts, fancyhdr, color, comment, graphicx, environ}
+\usepackage{blindtext}
+\usepackage{wrapfig}
+\usepackage{indentfirst}
+\usepackage{ulem}
+\usepackage[nottoc]{tocbibind}
+\usepackage{setspace}
+% use minted for code snippets
+\usepackage{minted}
+\usemintedstyle{vs}
+% use font: Computer Modern Sans Serif
+\usepackage[OT1]{fontenc}
+\renewcommand*\familydefault{\sfdefault}
+% citation stuff
+\usepackage{csquotes}
+\usepackage[style=alphabetic]{biblatex}
+\addbibresource{references.bib}
+
+
+\date{}
+
+\author{Alaa Adam, Tobias Kretschel, Tim Witte}
+
+
+% layout: Fancy header and footer
+\renewcommand{\footrulewidth}{0.8 pt}
+
+\pagestyle{fancy}
+\lhead{Implementing ANNs with Tensorflow}
+\rhead{Learning Flappy Bird} 
+\chead{\textbf{}}
+\lfoot{Prof. Piper}
+\rfoot{Universität Osnabrück}
+
+\begin{document}
+
+\input{cover-page}
+
+\tableofcontents
+
+\pagenumbering{gobble}
+
+%\vfill\hrule
+
+%\listoffigures
+
+%\listoftables
+\cleardoublepage% ensures that the page numbering will change on a recto page
+\pagenumbering{arabic}
+
+% ------- content --------
+
+\input{sections/introduction}
+\input{sections/background}
+\input{sections/implementation}
+\input{sections/evalution}
+\input{sections/summary}
+
+\newpage
+\printbibliography
+
+\end{document}
+
