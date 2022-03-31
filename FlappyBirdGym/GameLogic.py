@@ -7,11 +7,29 @@ import numpy as np
 
 
 def gaussian_normal(x, mu=0, sigma=1):
+    """Calculates the corresponding y value of the normal distribution for the x value. 
+
+    Keyword arguments:
+    x -- x value
+    mu -- mean
+    sigma -- standard deviation
+
+    Return:
+    y value
+    """
     return (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp((-1 / 2) * ((x - mu) / sigma) ** 2)
 
 
 class GameLogic:
-    def __init__(self, window_mode, window=None, height=300, width=450):
+    def __init__(self, window_mode: int, window=None, height=300, width=450):
+        """Init variables for the GameLogic.
+
+        Keyword arguments:
+        window_mode -- 0 = no window, 1 = only game window, 2 = game window with plots
+        window -- window object
+        height -- height of the window
+        width -- width of the window
+        """
 
         self.window_mode = window_mode
         self.height = height
@@ -24,6 +42,8 @@ class GameLogic:
         self.init_logic()
 
     def init_logic(self):
+        """Init/reset the GameLogic. 
+        """
 
         # Bird (rectangle) positions 
         self.bird_posX0 = 15
@@ -62,6 +82,14 @@ class GameLogic:
         self.add_new_column_cnt = 0
 
     def nextGameStep(self, action):
+        """Executes the action by changing the game state
+
+        Keyword arguments:
+        action -- action of the bird: 0 = no jump, 1 = jump
+
+        Return:
+        done (does the action end the game?), reward
+        """
 
         #
         # Update columns 
@@ -151,6 +179,15 @@ class GameLogic:
         return killed, reward
 
     def get_state(self):
+        """
+        Return:
+        The game state which be be described by the concatenated coordinates
+        of the bird and the two columns (one columns is placed on top of the other columns 
+        where is place between them).
+        All these three rectangles can be described four points.
+        In total a game state contains 12 values.
+        """
+
         # note: top and down column is a rectangle which can be described by four points (x0, x1, y0, y1)
         #       this also applied to the bird
 
@@ -163,6 +200,10 @@ class GameLogic:
                          self.first_column.down_pos_x1, self.first_column.down_pos_y1])
 
     def reset(self):
+        """
+        Reset the game logic and clearing the window (remove all elements drawn on it)
+        """
+
         # Remove columns and bird
         if self.window_mode != WindowMode.NO_WINDOW:
             for column in self.columns:
