@@ -14,6 +14,15 @@ The AI was pretrainied for 810 episodes.
 The weights are saved in `./saved_model`. 
 Besides, `PlayGame.py` enables to see the AI in action (see "Game Window: See results").
 
+## Requirements
+- TensorFlow 2
+- Numpy
+- tkinter
+- matplotlib
+- argparse
+- imageio
+- pyautogui
+
 ## Reward System
 
 The reward is normal distributed where x is `bird_posY0`.
@@ -127,7 +136,7 @@ Besides, corresponding TensorBoard files are saved in `./test_logs/`
 
 ### Game Window: See results  
 
-### Without plots
+#### Without plots
 
 The game window without plots opens.
 In this window the AI play Flappy Bird.
@@ -141,7 +150,7 @@ python3 PlayGame.py
 
 Note that, if `--mode` is not passed as an argument it is default set to `0`.
 
-### With plots
+#### With plots
 
 The game window with plots opens.
 In this window the AI play Flappy Bird.
@@ -169,7 +178,7 @@ The plot is structured as follows:
 ```
 
 ### Create a GIF
-Screenshots are taken from the entire game window (including plots if activated) and stored within in GIF file.
+Screenshots are taken from the entire game window (including plots if activated) and stored in a GIF file.
 
 ```bash
 python3 PlayGame.py --mode 0 --gif "./PlayFlappyBird.gif"
