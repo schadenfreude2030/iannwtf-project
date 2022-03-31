@@ -2,7 +2,12 @@ import tensorflow as tf
 
 
 class DDDQN(tf.keras.Model):
-    def __init__(self, num_actions):
+    def __init__(self, num_actions: int):
+        """Init the DDDQN. 
+
+        Keyword arguments:
+        num_actions -- Number of possible actions which can be taken in the gym.
+        """
         super(DDDQN, self).__init__()
 
         self.front_end_layer_list = [
@@ -17,7 +22,19 @@ class DDDQN(tf.keras.Model):
         self.loss_function = tf.keras.losses.MeanSquaredError()
 
     @tf.function
-    def call(self, x, return_info=False):
+    def call(self, x: tf.Tensor, return_info=False):
+        """Forward pass through the network. 
+
+        Keyword arguments:
+        x -- network input
+        return_info -- shall be state, adventage and layer_activations also returned as a tupel?
+
+        Return:
+        return_info = False -> return only network output
+        return_info = True -> return network output, state, adventage, layer_activations
+
+        note that, layer_activations are return as a list
+        """
 
         layer_activations = [x]
         for layer in self.front_end_layer_list:
@@ -34,7 +51,14 @@ class DDDQN(tf.keras.Model):
             return q
     
     # @tf.function causes problems when plotting the model
-    def call_onlyForPlotPurpose(self, x):
+    def call_onlyForPlotPurpose(self, x: tf.Tensor):
+        """Forward pass through the network. 
+        This function shall not be used for training.
+        It is only used for plotting the model.
+
+        Keyword arguments:
+        x -- network input
+        """
 
         for layer in self.front_end_layer_list:
             x = layer(x)
@@ -48,7 +72,14 @@ class DDDQN(tf.keras.Model):
         
 
     @tf.function
-    def train_step(self, x, target):
+    def train_step(self, x: tf.Tensor, target: tf.Tensor):
+        """Train the network based on input and target,
+
+        Keyword arguments:
+        x -- network input
+        target -- target
+        """
+        
         with tf.GradientTape() as tape:
             predictions = self(x, training=True)
             loss = self.loss_function(target, predictions)  # + tf.reduce_sum(self.losses)
